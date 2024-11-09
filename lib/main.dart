@@ -31,24 +31,11 @@ class _MyAppState extends State<MyApp> {
         'home': (context) => Home(),
         'sign_in': (context) => sing_in(),
       },
-      home: MyhomePage(),
+      home: Home(),
     );
   }
 }
 
-class MyhomePage extends StatefulWidget {
-  const MyhomePage({super.key});
 
-  @override
-  State<MyhomePage> createState() => _MyhomePageState();
-}
 
-class _MyhomePageState extends State<MyhomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: null,
-    );
-  }
-}
 

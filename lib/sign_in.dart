@@ -86,9 +86,9 @@ class _sing_inState extends State<sing_in> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, "sign_in");
+                        goto_home();
                       },
-                      child: const Text('Sign Up',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      child: const Text('Sign In',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                     ),
                   )
                 ],

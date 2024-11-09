@@ -34,26 +34,7 @@ class _HomeState extends State<Home> {
       //   ),
       // ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                SizedBox(height: 80,),
-                Icon(Icons.settings,),
-                SizedBox(width: 20,),
-                Icon(Icons.tab),
-                SizedBox(width: 20,),
-                Icon(Icons.supervised_user_circle),
-                SizedBox(width: 270,),
-                Icon(Icons.home),
-              ],
-            ),
-            Text(
-              "Google",
-              style: TextStyle(fontSize: 50, color: Colors.red),
-            ),
-          ],
-        ),
+
       ),
     );
   }

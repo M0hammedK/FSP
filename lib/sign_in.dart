@@ -5,6 +5,7 @@ import 'package:untitled1/sign_up.dart';
 class sing_in extends StatefulWidget {
   const sing_in({super.key});
 
+
   @override
   State<sing_in> createState() => _sing_inState();
 }
@@ -85,7 +86,7 @@ class _sing_inState extends State<sing_in> {
 
   void goto_home() {
     if (sign_up.email.text.trim() == _email.text.trim()){
-      if(sign_up.password1.text.trim() == _password.text.trim()) {
+        if(sign_up.password.text.trim() == _password.text.trim()) {
           Navigator.pushNamed(context, 'home');
 
       }

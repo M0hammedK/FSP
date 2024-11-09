@@ -4,142 +4,127 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class sign_up extends StatefulWidget {
-  static var username = _MyAppState._username;
-  static var email = _MyAppState._email;
-  static var password1 = _MyAppState._password1;
-  static var password2 = _MyAppState._password2;
-  static var phone = _MyAppState._phone;
-  static var image = _MyAppState._image;
+  static TextEditingController email = _SignUpPageState._email;
+  static TextEditingController username = _SignUpPageState._username;
+  static TextEditingController location = _SignUpPageState._location;
+  static TextEditingController password = _SignUpPageState._password1;
+  static TextEditingController phone = _SignUpPageState._phone;
+  static File? image = _SignUpPageState._image;
 
   const sign_up({super.key});
 
-  // This widget is the root of your application.
   @override
-  State<sign_up> createState() => _MyAppState();
-}
+  State<sign_up> createState() => _SignUpPageState();}
 
-class _MyAppState extends State<sign_up> {
-  bool _obsecureText = true;
+
+class _SignUpPageState extends State<sign_up> {
   static final TextEditingController _username = TextEditingController();
   static final TextEditingController _email = TextEditingController();
+  static final TextEditingController _location = TextEditingController();
   static final TextEditingController _password1 = TextEditingController();
   static final TextEditingController _password2 = TextEditingController();
   static final TextEditingController _phone = TextEditingController();
-  void _password_visibality() {
+  static File? _image;
+
+  Future getImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
-      _obsecureText = !_obsecureText;
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
     });
   }
-  static XFile? _image;
-  Future<void> _pickimage() async{
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
-    home:
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "SIGN UP",
-          style: TextStyle(fontSize: 25),
-        ),
+        title: const Text('Theater Sign Up'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Container( // Add Container here
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/down.jpg'), // Replace with your image path
+            fit: BoxFit.cover, // Adjust fit as needed
+          ),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              height: 50,
+            GestureDetector(
+              onTap: getImage,
+              child: CircleAvatar(
+                radius: 60,
+                backgroundImage: _image != null ? FileImage(_image!) : null,
+                child: _image == null
+                    ? const Icon(Icons.add_a_photo, size: 40)
+                    : null,
+              ),
             ),
-
-            _image != null ? Image.file(File(_image!.path), height: 100, width: 100,) : Text("No image selected"),
-            SizedBox(
-              height: 20),
-            ElevatedButton(onPressed: _pickimage, child: Text("Pick image from Gallery")),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
+            const SizedBox(height: 20),
+            TextFormField(
               controller: _username,
               decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.account_circle),
-                  hintText: "Username",
-                  hintStyle: TextStyle(fontSize: 20, color: Colors.red)),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              controller: _email,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email),
-                  hintText: "Email",
-                  hintStyle: const TextStyle(fontSize: 20, color: Colors.red),
-                 ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              controller: _password1,
-              obscureText: _obsecureText,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.password),
-                  hintText: "Password",
-                  hintStyle: const TextStyle(fontSize: 20, color: Colors.red),
-                  suffixIcon: IconButton(
-                      icon: Icon(_obsecureText
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: _password_visibality)),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              controller: _password2,
-              obscureText: _obsecureText,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.password),
-                  hintText: "Repeat Password",
-                  hintStyle: const TextStyle(fontSize: 20, color: Colors.red),
-                  suffixIcon: IconButton(
-                      icon: Icon(_obsecureText
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: _password_visibality)),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              controller: _phone,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.phone),
-                  hintText: "Phone Number",
-                  hintStyle: const TextStyle(fontSize: 20, color: Colors.red),
-                  ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Center(
-              child: MaterialButton(
-                onPressed: ()=> Navigator.pushNamed(context, 'sign_in'),
-                color: Colors.red,
-                child: Text(
-                  "Sing Up",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
-                ),
+                labelText: 'Theater Name',
+                border: OutlineInputBorder(),
               ),
-            )
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _email,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _password1,
+              decoration: const InputDecoration(
+                labelText: 'Password',border: OutlineInputBorder(),
+              ),
+              obscureText: true, // Hides password input
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _password2,
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+                border: OutlineInputBorder(),
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _location,
+              decoration: const InputDecoration(
+                labelText: 'Location',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _phone,
+              decoration: const InputDecoration(
+                labelText: 'Contact Number',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "sign_in");
+              },
+              child: const Text('Sign Up'),
+            ),
           ],
         ),
+      ),
       ),
     );
   }

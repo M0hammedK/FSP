@@ -44,7 +44,7 @@ class _SignUpPageState extends State<sign_up> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              "images/down.jpg",
+              "images/SignUP.jpg",
               fit: BoxFit.cover,
             ),
           ),

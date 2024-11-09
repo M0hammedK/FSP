@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/sign_up.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -47,25 +48,87 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Movie App'),
-        backgroundColor: const Color(0xFF3F51B5), // Updated color
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('images/down.jpg'), // Background image
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              "images/backgroundblue.jpg",
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: ListView(
-          children: [
-            _buildSectionHeader('Today\'s Movies'),
-            _buildMovieCarousel(todaysMovies),
-            _buildSectionHeader('Upcoming Movies'),
-            _buildMovieCarousel(upcomingMovies),
-          ],
-        ),
+          Scaffold(
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Text(
+                      'Profile Options',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  // Navigate to Profile
+                  ListTile(
+                    leading: const Icon(Icons.account_circle),
+                    title: const Text('Profile'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Home(
+                            // username: '',
+                            // email: '',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  // Sign Up Option
+                  ListTile(
+                    leading: const Icon(Icons.person_add),
+                    title: const Text('Create New Profile'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const sign_up(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: const Text(
+                'CinemaTech',
+                style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25),
+              ),
+              backgroundColor: Colors.black.withOpacity(0.7),
+              elevation: 10,
+            ),
+            body: Container(
+              child: ListView(
+                children: [
+                  _buildSectionHeader('Today\'s Movies'),
+                  _buildMovieCarousel(todaysMovies),
+                  _buildSectionHeader('Upcoming Movies'),
+                  _buildMovieCarousel(upcomingMovies),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -142,7 +205,7 @@ class MovieCard extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text('$genre | Rating: $rating',
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),

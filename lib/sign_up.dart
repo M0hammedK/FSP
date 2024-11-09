@@ -14,8 +14,8 @@ class sign_up extends StatefulWidget {
   const sign_up({super.key});
 
   @override
-  State<sign_up> createState() => _SignUpPageState();}
-
+  State<sign_up> createState() => _SignUpPageState();
+}
 
 class _SignUpPageState extends State<sign_up> {
   static final TextEditingController _username = TextEditingController();
@@ -28,7 +28,7 @@ class _SignUpPageState extends State<sign_up> {
 
   Future getImage() async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -41,90 +41,159 @@ class _SignUpPageState extends State<sign_up> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Theater Sign Up'),
-      ),
-      body: Container( // Add Container here
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/down.jpg'), // Replace with your image path
-            fit: BoxFit.cover, // Adjust fit as needed
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              "images/down.jpg",
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-              onTap: getImage,
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage: _image != null ? FileImage(_image!) : null,
-                child: _image == null
-                    ? const Icon(Icons.add_a_photo, size: 40)
-                    : null,
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: const Text('Sign Up'),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: getImage,
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage:
+                          _image != null ? FileImage(_image!) : null,
+                      child: _image == null
+                          ? const Icon(Icons.add_a_photo, size: 40)
+                          : null,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _username,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Theater Name',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _email,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _password1,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                    obscureText: true, // Hides password input
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _password2,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _location,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Location',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _phone,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Contact Number',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "sign_in");
+                    },
+                    child: const Text('Sign Up',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _username,
-              decoration: const InputDecoration(
-                labelText: 'Theater Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: _email,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: _password1,
-              decoration: const InputDecoration(
-                labelText: 'Password',border: OutlineInputBorder(),
-              ),
-              obscureText: true, // Hides password input
-            ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: _password2,
-              decoration: const InputDecoration(
-                labelText: 'Confirm Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-            ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: _location,
-              decoration: const InputDecoration(
-                labelText: 'Location',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: _phone,
-              decoration: const InputDecoration(
-                labelText: 'Contact Number',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "sign_in");
-              },
-              child: const Text('Sign Up'),
-            ),
-          ],
-        ),
-      ),
+          ),
+        ],
       ),
     );
   }

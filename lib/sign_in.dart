@@ -17,69 +17,85 @@ class _sing_inState extends State<sing_in> {
   void _password_visibality() {
     setState(() {
       _obsecureText = !_obsecureText;
-    });
+    }
+  );
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "SIGN IN",
-          style: TextStyle(fontSize: 25),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 100,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              "images/up.jpg",
+              fit: BoxFit.cover,
             ),
-            Center(
-                child: Icon(Icons.login,size: 200,)
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _email,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.email),
-                  hintText: "email",
-                  hintStyle: TextStyle(fontSize: 20, color: Colors.red)),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              controller: _password,
-              obscureText: _obsecureText,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.password),
-                  hintText: "password",
-                  hintStyle: const TextStyle(fontSize: 20, color: Colors.red),
-                  suffixIcon: IconButton(
-                      icon: Icon(_obsecureText
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: _password_visibality)),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Center(
-              child: MaterialButton(
-                onPressed: goto_home,
-                color: Colors.red,
-                child: Text(
-                  "Sing In",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
-                ),
+          ),
+          Scaffold(
+            appBar: AppBar(
+          title: const Text('Sign In', style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold, fontSize: 25),),
+          backgroundColor: Colors.black.withOpacity(0.5),
+          elevation: 10,
               ),
-            )
-          ],
-        ),
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 250,
+                  ),
+                  TextFormField(
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    obscureText: _obsecureText,
+                    cursorColor: Colors.deepPurple,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                        fontSize: 20, fontWeight: FontWeight.bold,),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "sign_in");
+                      },
+                      child: const Text('Sign Up',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

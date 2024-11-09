@@ -12,7 +12,6 @@ class sign_up extends StatefulWidget {
   static File? image = _SignUpPageState._image;
 
   const sign_up({super.key});
-
   @override
   State<sign_up> createState() => _SignUpPageState();
 }
@@ -52,9 +51,9 @@ class _SignUpPageState extends State<sign_up> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: const Text('Sign Up'),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
+              title: const Text('Sign Up', style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold, fontSize: 25),),
+              backgroundColor: Colors.black.withOpacity(0.5),
+              elevation: 10,
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),

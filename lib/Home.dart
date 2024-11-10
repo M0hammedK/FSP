@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/sign_up.dart';
+import 'package:untitled1/sign_in.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _Home();
+
 }
 
 class _Home extends State<Home> {
+  AssetImage transparentImage = const AssetImage('images/CinemaTech_transparent.png');
   final List<Map<String, dynamic>> todaysMovies = [
     {
       'title': 'Oppenheimer',
@@ -58,51 +61,69 @@ class _Home extends State<Home> {
           ),
           Scaffold(
             drawer: Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  const DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                    child: Text(
-                      'Profile Options',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  iconTheme: IconThemeData(color: Colors.deepPurple),
+                ),
+                child: Container(
+                  color: Colors.black87,
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      DrawerHeader(
+                        decoration: const BoxDecoration(
+                          color: Colors.deepPurple,
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 50, //Adjust the radius as needed
+                              backgroundImage: (sign_up.image != null)
+                                  ? FileImage(sign_up
+                                      .image!) // Use FileImage if sign_up.image is not null
+                                  : const AssetImage(
+                                      'images/CinemaTech.png',), // Use AssetImage for default image
+                            ),
+                            Text(
+                              (sign_up.username.text.trim() != "")
+                                  ? sign_up.username.text.trim()
+                                  : "CinemaTech",
+                              style: const TextStyle(
+                                color: Colors.tealAccent,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ], // Center the CircleAvatar
+                        ),
                       ),
-                    ),
+                      // Navigate to Profile
+                      ListTile(
+                        leading: const Icon(Icons.account_circle, color: Colors.white,),
+                        title: const Text('Existed Profile', style: TextStyle(color: Colors.white),),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const sing_in()),
+                          );
+                        },
+                      ),
+                      // Sign Up Option
+                      ListTile(
+                        leading: const Icon(Icons.person_add, color: Colors.white,),
+                        title: const Text('Create New Profile', style: TextStyle(color: Colors.white),),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const sign_up(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  // Navigate to Profile
-                  ListTile(
-                    leading: const Icon(Icons.account_circle),
-                    title: const Text('Profile'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Home(
-                            // username: '',
-                            // email: '',
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  // Sign Up Option
-                  ListTile(
-                    leading: const Icon(Icons.person_add),
-                    title: const Text('Create New Profile'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const sign_up(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
             backgroundColor: Colors.transparent,
@@ -114,7 +135,7 @@ class _Home extends State<Home> {
                     fontWeight: FontWeight.bold,
                     fontSize: 25),
               ),
-              backgroundColor: Colors.black.withOpacity(0.7),
+              backgroundColor: Colors.black.withOpacity(0.8),
               elevation: 10,
             ),
             body: Container(

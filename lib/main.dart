@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:untitled1/Home.dart';
 import 'package:untitled1/sign_up.dart';
 import 'package:untitled1/sign_in.dart';
+import 'package:image/image.dart' as img;
 
 void main() {
   runApp(const MyApp());
@@ -18,14 +21,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _obsecureText = true;
   void _password_visibality() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'sign_up',
+      initialRoute: 'home',
       routes: {
         'sign_up': (context) => sign_up(),
         'home': (context) => Home(),
@@ -35,7 +37,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-
-

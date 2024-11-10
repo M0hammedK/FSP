@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled1/Home.dart';
 import 'package:untitled1/sign_up.dart';
 import 'package:untitled1/sign_in.dart';
+import 'package:untitled1/adminpage.dart';
 import 'package:image/image.dart' as img;
 
 void main() {
@@ -32,6 +33,8 @@ class _MyAppState extends State<MyApp> {
         'sign_up': (context) => sign_up(),
         'home': (context) => Home(),
         'sign_in': (context) => sing_in(),
+        'adminpage': (context) => AdminPage(),
+
       },
       home: Home(),
     );

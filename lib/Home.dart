@@ -1,52 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:untitled1/sign_up.dart';
-import 'package:untitled1/sign_in.dart';
+import 'movie_data.dart';
+import 'sign_up.dart';
+import 'sign_in.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _Home();
-
 }
 
 class _Home extends State<Home> {
-  AssetImage transparentImage = const AssetImage('images/CinemaTech_transparent.png');
-  final List<Map<String, dynamic>> todaysMovies = [
-    {
-      'title': 'Oppenheimer',
-      'posterUrl': 'images/Oppenhiemer.jpg',
-      'genre': 'Biography, Drama, History',
-      'rating': 8.6,
-    },
-    {
-      'title': 'Barbie',
-      'posterUrl': 'images/QuietPlace.jpg',
-      'genre': 'Adventure, Comedy, Fantasy',
-      'rating': 7.6,
-    },
-    {
-      'title': 'Talk to Me',
-      'posterUrl': 'images/Talktome.jpg',
-      'genre': 'Horror, Mystery, Thriller',
-      'rating': 7.4,
-    },
-  ];
-
-  final List<Map<String, dynamic>> upcomingMovies = [
-    {
-      'title': 'Movie 4',
-      'posterUrl': 'images/Talktome.jpg', // Replace with actual asset path
-      'genre': 'Genre 4',
-      'rating': 7.2,
-    },
-    {
-      'title': 'Movie 5',
-      'posterUrl': 'images/Oppenhiemer.jpg', // Replace with actual asset path
-      'genre': 'Genre 5',
-      'rating': 8.0,
-    },
-  ];
+  final MovieData movieData = MovieData(); // Reference the singleton
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +28,7 @@ class _Home extends State<Home> {
             drawer: Drawer(
               child: Theme(
                 data: Theme.of(context).copyWith(
-                  iconTheme: IconThemeData(color: Colors.deepPurple),
+                  iconTheme: const IconThemeData(color: Colors.deepPurple),
                 ),
                 child: Container(
                   color: Colors.black87,
@@ -77,13 +42,13 @@ class _Home extends State<Home> {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 50, //Adjust the radius as needed
+                              radius: 50,
                               backgroundImage: (sign_up.image != null)
-                                  ? FileImage(sign_up
-                                      .image!) // Use FileImage if sign_up.image is not null
-                                  : const AssetImage(
-                                      'images/CinemaTech.png',), // Use AssetImage for default image
+                                  ? FileImage(sign_up.image!)
+                                  : const AssetImage('images/CinemaTech.png')
+                              as ImageProvider,
                             ),
+                            const SizedBox(width: 10),
                             Text(
                               (sign_up.username.text.trim() != "")
                                   ? sign_up.username.text.trim()
@@ -93,31 +58,28 @@ class _Home extends State<Home> {
                                 fontSize: 24,
                               ),
                             ),
-                          ], // Center the CircleAvatar
+                          ],
                         ),
                       ),
                       // Navigate to Profile
                       ListTile(
-                        leading: const Icon(Icons.account_circle, color: Colors.white,),
-                        title: const Text('Existed Profile', style: TextStyle(color: Colors.white),),
+                        leading: const Icon(Icons.account_circle, color: Colors.white),
+                        title: const Text('Existed Profile', style: TextStyle(color: Colors.white)),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => const sing_in()),
+                            MaterialPageRoute(builder: (context) => const sing_in()),
                           );
                         },
                       ),
                       // Sign Up Option
                       ListTile(
-                        leading: const Icon(Icons.person_add, color: Colors.white,),
-                        title: const Text('Create New Profile', style: TextStyle(color: Colors.white),),
+                        leading: const Icon(Icons.person_add, color: Colors.white),
+                        title: const Text('Create New Profile', style: TextStyle(color: Colors.white)),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => const sign_up(),
-                            ),
+                            MaterialPageRoute(builder: (context) => const sign_up()),
                           );
                         },
                       ),
@@ -131,9 +93,10 @@ class _Home extends State<Home> {
               title: const Text(
                 'CinemaTech',
                 style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25),
+                  color: Colors.deepPurple,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
               ),
               backgroundColor: Colors.black.withOpacity(0.8),
               elevation: 10,
@@ -142,9 +105,9 @@ class _Home extends State<Home> {
               child: ListView(
                 children: [
                   _buildSectionHeader('Today\'s Movies'),
-                  _buildMovieCarousel(todaysMovies),
+                  _buildMovieCarousel(movieData.todaysMovies), // Access singleton's data
                   _buildSectionHeader('Upcoming Movies'),
-                  _buildMovieCarousel(upcomingMovies),
+                  _buildMovieCarousel(movieData.upcomingMovies), // Access singleton's data
                 ],
               ),
             ),
@@ -189,6 +152,11 @@ class _Home extends State<Home> {
 }
 
 class MovieCard extends StatelessWidget {
+  final String title;
+  final String posterUrl;
+  final String genre;
+  final double rating;
+
   const MovieCard({
     Key? key,
     required this.title,
@@ -196,11 +164,6 @@ class MovieCard extends StatelessWidget {
     required this.genre,
     required this.rating,
   }) : super(key: key);
-
-  final String title;
-  final String posterUrl;
-  final String genre;
-  final double rating;
 
   @override
   Widget build(BuildContext context) {
@@ -212,8 +175,8 @@ class MovieCard extends StatelessWidget {
           children: [
             Image.asset(
               posterUrl,
-              height: 200, // Adjust the height as needed
-              width: 180, // Adjusted width for iPhone 12 Pro
+              height: 200,
+              width: 180,
               fit: BoxFit.cover,
             ),
             Padding(

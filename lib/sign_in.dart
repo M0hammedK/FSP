@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/sign_up.dart';
+import 'package:untitled1/adminpage.dart';
+
 
 class sing_in extends StatefulWidget {
   const sing_in({super.key});
@@ -118,6 +120,11 @@ class _sing_inState extends State<sing_in> {
   }
 
   void goto_home() {
+    if (_email.text.trim() == 'admin' && _password.text.trim()=='admin')
+    {
+      Navigator.pushNamed(context, 'adminpage');
+
+    }
     if (sign_up.email.text.trim() == _email.text.trim()) {
       if (sign_up.password.text.trim() == _password.text.trim()) {
         Navigator.pushNamed(context, 'home');

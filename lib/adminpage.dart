@@ -16,7 +16,7 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Panel',style: TextStyle(color:Colors.white)),
+        title: const Text('Admin Panel', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black87,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -83,24 +83,30 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-  Widget _buildMovieRow(Map<String, dynamic> movie, int index, String category) {
+  Widget _buildMovieRow(
+      Map<String, dynamic> movie, int index, String category) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8), // Add a translucent white background
+          color: Colors.white
+              .withOpacity(0.8), // Add a translucent white background
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black.withOpacity(0.2), width: 1), // Add border
+          border: Border.all(
+              color: Colors.black.withOpacity(0.2), width: 1), // Add border
         ),
         child: Row(
           children: [
             // Movie Poster
-            Image.asset(
-              movie['posterUrl'],
-              height: 140,
-              width: 110,
-              fit: BoxFit.cover,
-            ),
+            (movie['posterUrl'].substring(0, 4) != "http")
+                ? Image.asset(
+                    movie['posterUrl'],
+                    height: 200,
+                    width: 180,
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(movie['posterUrl'],
+                    height: 200, width: 180, fit: BoxFit.cover),
             const SizedBox(width: 10),
             // Movie Details
             Expanded(
@@ -147,11 +153,11 @@ class _AdminPageState extends State<AdminPage> {
 
   void _editMovie(Map<String, dynamic> movie, int index, String category) {
     final TextEditingController titleController =
-    TextEditingController(text: movie['title']);
+        TextEditingController(text: movie['title']);
     final TextEditingController genreController =
-    TextEditingController(text: movie['genre']);
+        TextEditingController(text: movie['genre']);
     final TextEditingController ratingController =
-    TextEditingController(text: movie['rating'].toString());
+        TextEditingController(text: movie['rating'].toString());
 
     showDialog(
       context: context,

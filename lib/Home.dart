@@ -46,7 +46,7 @@ class _Home extends State<Home> {
                               backgroundImage: (sign_up.image != null)
                                   ? FileImage(sign_up.image!)
                                   : const AssetImage('images/CinemaTech.png')
-                              as ImageProvider,
+                                      as ImageProvider,
                             ),
                             const SizedBox(width: 10),
                             Text(
@@ -63,23 +63,29 @@ class _Home extends State<Home> {
                       ),
                       // Navigate to Profile
                       ListTile(
-                        leading: const Icon(Icons.account_circle, color: Colors.white),
-                        title: const Text('Existed Profile', style: TextStyle(color: Colors.white)),
+                        leading: const Icon(Icons.account_circle,
+                            color: Colors.white),
+                        title: const Text('Existed Profile',
+                            style: TextStyle(color: Colors.white)),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const sing_in()),
+                            MaterialPageRoute(
+                                builder: (context) => const sing_in()),
                           );
                         },
                       ),
                       // Sign Up Option
                       ListTile(
-                        leading: const Icon(Icons.person_add, color: Colors.white),
-                        title: const Text('Create New Profile', style: TextStyle(color: Colors.white)),
+                        leading:
+                            const Icon(Icons.person_add, color: Colors.white),
+                        title: const Text('Create New Profile',
+                            style: TextStyle(color: Colors.white)),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const sign_up()),
+                            MaterialPageRoute(
+                                builder: (context) => const sign_up()),
                           );
                         },
                       ),
@@ -105,9 +111,11 @@ class _Home extends State<Home> {
               child: ListView(
                 children: [
                   _buildSectionHeader('Today\'s Movies'),
-                  _buildMovieCarousel(movieData.todaysMovies), // Access singleton's data
+                  _buildMovieCarousel(
+                      movieData.todaysMovies), // Access singleton's data
                   _buildSectionHeader('Upcoming Movies'),
-                  _buildMovieCarousel(movieData.upcomingMovies), // Access singleton's data
+                  _buildMovieCarousel(
+                      movieData.upcomingMovies), // Access singleton's data
                 ],
               ),
             ),
@@ -173,12 +181,15 @@ class MovieCard extends StatelessWidget {
         color: Colors.grey[300], // Set the background color
         child: Column(
           children: [
-            Image.asset(
-              posterUrl,
-              height: 200,
-              width: 180,
-              fit: BoxFit.cover,
-            ),
+            (posterUrl.substring(0, 4) != "http")
+                ? Image.asset(
+                    posterUrl,
+                    height: 200,
+                    width: 180,
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(posterUrl,
+                    height: 200, width: 180, fit: BoxFit.cover),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

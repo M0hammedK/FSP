@@ -8,9 +8,11 @@ class sign_up extends StatefulWidget {
   static TextEditingController username = _SignUpPageState._username;
   static TextEditingController password = _SignUpPageState._password1;
   static TextEditingController phone = _SignUpPageState._phone;
-  static File? image = _SignUpPageState._image;
+  static File? image = _image;
 
   const sign_up({super.key});
+
+  static File? get _image => _SignUpPageState._image;
   @override
   State<sign_up> createState() => _SignUpPageState();
 }
@@ -53,6 +55,10 @@ class _SignUpPageState extends State<sign_up> {
               title: const Text('Sign Up', style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold, fontSize: 25),),
               backgroundColor: Colors.black.withOpacity(0.5),
               elevation: 10,
+              iconTheme: const IconThemeData(
+                // Change drawer icon color here
+                color: Colors.deepPurple,
+              ),
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
@@ -184,7 +190,7 @@ class _SignUpPageState extends State<sign_up> {
         if(_password1.text.trim() != "" && _password1.text.trim() == _password2.text.trim()){
           if(_phone.text.trim() != "" && _phone.text.length == 9){
             if(phones.contains(_phone.text.trim().substring(0,2))){
-                
+                Navigator.pushNamed(context, "sign_in");
             }
           }
         }

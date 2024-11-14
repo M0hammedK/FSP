@@ -43,6 +43,10 @@ class _sing_inState extends State<sing_in> {
               ),
               backgroundColor: Colors.black.withOpacity(0.5),
               elevation: 10,
+              iconTheme: const IconThemeData(
+                // Change drawer icon color here
+                color: Colors.deepPurple,
+              ),
             ),
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
@@ -120,15 +124,16 @@ class _sing_inState extends State<sing_in> {
   }
 
   void goto_home() {
-    if (_email.text.trim() == 'admin' && _password.text.trim()=='admin')
-    {
-      Navigator.pushNamed(context, 'adminpage');
-
-    }
     if (sign_up.email.text.trim() == _email.text.trim()) {
       if (sign_up.password.text.trim() == _password.text.trim()) {
         Navigator.pushNamed(context, 'home');
       }
+    }
+    else if (_email.text.trim() == 'admin' && _password.text.trim()=='admin')
+    {
+      sign_up.username.text = "admin";
+      Navigator.pushNamed(context, 'home');
+
     }
   }
 }

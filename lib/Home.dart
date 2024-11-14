@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/adminpage.dart';
 import 'movie_data.dart';
 import 'sign_up.dart';
 import 'sign_in.dart';
@@ -18,7 +19,6 @@ class _Home extends State<Home> {
     return Scaffold(
       body: Stack(
         children: [
-
           Positioned.fill(
             child: Image.asset(
               "images/backgroundblue.jpg",
@@ -27,77 +27,145 @@ class _Home extends State<Home> {
           ),
           Scaffold(
             drawer: Drawer(
-
               child: Container(
-
-                  color: Colors.black87,
-
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-
-                      DrawerHeader(
-                        decoration: const BoxDecoration(
-                          color: Colors.deepPurple,
-
-                        ),
-                        child: Row(
-                          children: [
-
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: (sign_up.image != null)
-                                  ? FileImage(sign_up.image!)
-                                  : const AssetImage('images/CinemaTech.png')
-                                      as ImageProvider,
+                color: Colors.black87,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    DrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: Colors.deepPurple,
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: (sign_up.image != null)
+                                ? FileImage(sign_up.image!)
+                                : const AssetImage('images/CinemaTech.png')
+                                    as ImageProvider,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            (sign_up.username.text.trim() != "")
+                                ? sign_up.username.text.trim()
+                                : "CinemaTech",
+                            style: const TextStyle(
+                              color: Colors.tealAccent,
+                              fontSize: 24,
                             ),
-                            const SizedBox(width: 10),
-
-                            Text(
-                              (sign_up.username.text.trim() != "")
-                                  ? sign_up.username.text.trim()
-                                  : "CinemaTech",
-                              style: const TextStyle(
-                                color: Colors.tealAccent,
-                                fontSize: 24,
-
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Navigate to Profile
+                    (sign_up.username.text == "")
+                        ? ListTile(
+                            leading: const Icon(Icons.account_circle,
+                                color: Colors.white),
+                            title: const Text('Sign In',
+                                style: TextStyle(color: Colors.white)),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const sing_in()),
+                              );
+                            },
+                          )
+                        : (sign_up.username.text != "admin")
+                            ? ListTile(
+                                leading: const Icon(Icons.local_movies_sharp,
+                                    color: Colors.white),
+                                title: const Text('Your Tickets',
+                                    style: TextStyle(color: Colors.white)),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Home()),
+                                  );
+                                },
+                              )
+                            : ListTile(
+                                leading: const Icon(Icons.admin_panel_settings,
+                                    color: Colors.white),
+                                title: const Text('Admin Page',
+                                    style: TextStyle(color: Colors.white)),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AdminPage()),
+                                  );
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Navigate to Profile
-                      ListTile(
-                        leading: const Icon(Icons.account_circle,
-                            color: Colors.white),
-                        title: const Text('Sign In',
-                            style: TextStyle(color: Colors.white)),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const sing_in()),
-                          );
-                        },
-                      ),
-                      // Sign Up Option
-                      ListTile(
-                        leading:
-                            const Icon(Icons.person_add, color: Colors.white),
-                        title: const Text('Sign Up',
-                            style: TextStyle(color: Colors.white)),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const sign_up()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                    // Sign Up Option
+                    (sign_up.username.text == "")
+                        ? ListTile(
+                            leading: const Icon(Icons.person_add,
+                                color: Colors.white),
+                            title: const Text('Sign Up',
+                                style: TextStyle(color: Colors.white)),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const sign_up()),
+                              );
+                            },
+                          )
+                        : (sign_up.username.text != "admin")
+                            ? ListTile(
+                                leading: const Icon(Icons.logout,
+                                    color: Colors.white),
+                                title: const Text('Sign Out',
+                                    style: TextStyle(color: Colors.white)),
+                                onTap: () {
+                                  sign_up.username.text = "";
+                                  sign_up.image = null;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Home()),
+                                  );
+                                },
+                              )
+                            : ListTile(
+                                leading: const Icon(Icons.local_movies_sharp,
+                                    color: Colors.white),
+                                title: const Text('Your Tickets',
+                                    style: TextStyle(color: Colors.white)),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Home()),
+                                  );
+                                },
+                              ),
+                    (sign_up.username.text == "admin")
+                        ? ListTile(
+                            leading:
+                                const Icon(Icons.logout, color: Colors.white),
+                            title: const Text('Sign Out',
+                                style: TextStyle(color: Colors.white)),
+                            onTap: () {
+                              sign_up.username.text = "";
+                              sign_up.image = null;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Home()),
+                              );
+                            },
+                          )
+                        : ListTile(),
+                  ],
                 ),
               ),
+            ),
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: const Text(
@@ -110,7 +178,8 @@ class _Home extends State<Home> {
               ),
               backgroundColor: Colors.black.withOpacity(0.8),
               elevation: 10,
-              iconTheme: const IconThemeData( // Change drawer icon color here
+              iconTheme: const IconThemeData(
+                // Change drawer icon color here
                 color: Colors.deepPurple,
               ),
             ),
@@ -204,22 +273,26 @@ class MovieCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   RichText(
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
                           text: '$genre',
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.red),
                         ),
                         const TextSpan(
                           text: ' | ',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                         TextSpan(
                           text: 'Rating: $rating',
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue),
                         ),
                       ],
                     ),

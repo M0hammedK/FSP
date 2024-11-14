@@ -18,6 +18,7 @@ class _Home extends State<Home> {
     return Scaffold(
       body: Stack(
         children: [
+
           Positioned.fill(
             child: Image.asset(
               "images/backgroundblue.jpg",
@@ -26,21 +27,23 @@ class _Home extends State<Home> {
           ),
           Scaffold(
             drawer: Drawer(
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  iconTheme: const IconThemeData(color: Colors.deepPurple),
-                ),
-                child: Container(
+
+              child: Container(
+
                   color: Colors.black87,
+
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: <Widget>[
+
                       DrawerHeader(
                         decoration: const BoxDecoration(
                           color: Colors.deepPurple,
+
                         ),
                         child: Row(
                           children: [
+
                             CircleAvatar(
                               radius: 50,
                               backgroundImage: (sign_up.image != null)
@@ -49,6 +52,7 @@ class _Home extends State<Home> {
                                       as ImageProvider,
                             ),
                             const SizedBox(width: 10),
+
                             Text(
                               (sign_up.username.text.trim() != "")
                                   ? sign_up.username.text.trim()
@@ -56,6 +60,7 @@ class _Home extends State<Home> {
                               style: const TextStyle(
                                 color: Colors.tealAccent,
                                 fontSize: 24,
+
                               ),
                             ),
                           ],
@@ -65,7 +70,7 @@ class _Home extends State<Home> {
                       ListTile(
                         leading: const Icon(Icons.account_circle,
                             color: Colors.white),
-                        title: const Text('Existed Profile',
+                        title: const Text('Sign In',
                             style: TextStyle(color: Colors.white)),
                         onTap: () {
                           Navigator.push(
@@ -79,7 +84,7 @@ class _Home extends State<Home> {
                       ListTile(
                         leading:
                             const Icon(Icons.person_add, color: Colors.white),
-                        title: const Text('Create New Profile',
+                        title: const Text('Sign Up',
                             style: TextStyle(color: Colors.white)),
                         onTap: () {
                           Navigator.push(
@@ -93,7 +98,6 @@ class _Home extends State<Home> {
                   ),
                 ),
               ),
-            ),
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: const Text(
@@ -106,6 +110,9 @@ class _Home extends State<Home> {
               ),
               backgroundColor: Colors.black.withOpacity(0.8),
               elevation: 10,
+              iconTheme: const IconThemeData( // Change drawer icon color here
+                color: Colors.deepPurple,
+              ),
             ),
             body: Container(
               child: ListView(
@@ -178,7 +185,7 @@ class MovieCard extends StatelessWidget {
     return SizedBox(
       width: 180, // Adjusted width for iPhone 12 Pro
       child: Card(
-        color: Colors.grey[300], // Set the background color
+        color: Colors.black.withOpacity(0.5), // Set the background color
         child: Column(
           children: [
             (posterUrl.substring(0, 4) != "http")
@@ -197,10 +204,26 @@ class MovieCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-                  Text('$genre | Rating: $rating',
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '$genre',
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                        ),
+                        const TextSpan(
+                          text: ' | ',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                        TextSpan(
+                          text: 'Rating: $rating',
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

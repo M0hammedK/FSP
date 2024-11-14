@@ -15,21 +15,7 @@ class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Panel', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black87,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Navigate back to the Home Page
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-      ),
-      body: Stack(
+      body:Stack(
         children: [
           Positioned.fill(
             child: Image.asset(
@@ -37,23 +23,46 @@ class _AdminPageState extends State<AdminPage> {
               fit: BoxFit.cover,
             ),
           ),
-          ListView(
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: const Text('Admin Panel', style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.black87.withOpacity(0.7),
+            elevation: 10,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                // Navigate back to the Home Page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home()),
+                );
+              },
+            ),
+          ),
+          body: Stack(
             children: [
-              _buildSectionHeader('Manage Today\'s Movies'),
-              _buildMovieList(movieData.todaysMovies, 'today'),
-              _buildSectionHeader('Manage Upcoming Movies'),
-              _buildMovieList(movieData.upcomingMovies, 'upcoming'),
+
+              ListView(
+                children: [
+                  _buildSectionHeader('Manage Today\'s Movies'),
+                  _buildMovieList(movieData.todaysMovies, 'today'),
+                  _buildSectionHeader('Manage Upcoming Movies'),
+                  _buildMovieList(movieData.upcomingMovies, 'upcoming'),
+                ],
+              ),
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              _addMovieDialog(); // Show the Add Movie dialog
+            },
+            child: const Icon(Icons.add),
+            backgroundColor: Colors.indigo,
+          ),
+        ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addMovieDialog(); // Show the Add Movie dialog
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.indigo,
-      ),
+      )
     );
   }
 
@@ -89,8 +98,8 @@ class _AdminPageState extends State<AdminPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white
-              .withOpacity(0.8), // Add a translucent white background
+          color: Colors.black
+              .withOpacity(0.5), // Add a translucent white background
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
               color: Colors.black.withOpacity(0.2), width: 1), // Add border
@@ -118,15 +127,16 @@ class _AdminPageState extends State<AdminPage> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      color: Colors.white
                     ),
                   ),
                   Text(
                     movie['genre'],
-                    style: const TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14, color: Colors.red),
                   ),
                   Text(
                     'Rating: ${movie['rating']}',
-                    style: const TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14, color: Colors.blue),
                   ),
                 ],
               ),

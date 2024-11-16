@@ -19,7 +19,7 @@ class _AdminPageState extends State<AdminPage> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              "images/backgroundblue.jpg", // Add your background image path here
+              "images/backgroundblack.jpg", // Add your background image path here
               fit: BoxFit.cover,
             ),
           ),
@@ -164,6 +164,8 @@ class _AdminPageState extends State<AdminPage> {
   void _editMovie(Map<String, dynamic> movie, int index, String category) {
     final TextEditingController titleController =
         TextEditingController(text: movie['title']);
+    final TextEditingController storyController =
+        TextEditingController(text: movie['story']);
     final TextEditingController genreController =
         TextEditingController(text: movie['genre']);
     final TextEditingController ratingController =
@@ -180,6 +182,10 @@ class _AdminPageState extends State<AdminPage> {
               TextField(
                 controller: titleController,
                 decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: storyController,
+                decoration: const InputDecoration(labelText: 'Story'),
               ),
               TextField(
                 controller: genreController,
@@ -203,6 +209,7 @@ class _AdminPageState extends State<AdminPage> {
               onPressed: () {
                 setState(() {
                   movie['title'] = titleController.text;
+                  movie['story'] = storyController.text;
                   movie['genre'] = genreController.text;
                   movie['rating'] = double.parse(ratingController.text);
                 });
@@ -252,6 +259,7 @@ class _AdminPageState extends State<AdminPage> {
   void _addMovieDialog() {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController genreController = TextEditingController();
+    final TextEditingController storyController = TextEditingController();
     final TextEditingController ratingController = TextEditingController();
     final TextEditingController posterUrlController = TextEditingController();
 
@@ -266,6 +274,10 @@ class _AdminPageState extends State<AdminPage> {
               TextField(
                 controller: titleController,
                 decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: storyController,
+                decoration: const InputDecoration(labelText: 'Story'),
               ),
               TextField(
                 controller: genreController,
@@ -294,6 +306,7 @@ class _AdminPageState extends State<AdminPage> {
                 setState(() {
                   final newMovie = {
                     'title': titleController.text,
+                    'story': storyController.text,
                     'genre': genreController.text,
                     'rating': double.parse(ratingController.text),
                     'posterUrl': posterUrlController.text,

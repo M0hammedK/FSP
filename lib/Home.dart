@@ -22,7 +22,7 @@ class _Home extends State<Home> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              "images/backgroundblue.jpg",
+              "images/backgroundblack.jpg",
               fit: BoxFit.cover,
             ),
           ),
@@ -232,6 +232,7 @@ class _Home extends State<Home> {
                 MaterialPageRoute(
                   builder: (context) => moviepage( // Assuming MovieDetailsPage is your target page
                     title: movie['title'],
+                    story: movie['story'],
                     posterUrl: movie['posterUrl'],
                     genre: movie['genre'],
                     rating: movie['rating'],

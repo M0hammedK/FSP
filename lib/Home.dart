@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/adminpage.dart';
 import 'movie_data.dart';
+import 'moviepage.dart';
 import 'sign_up.dart';
 import 'sign_in.dart';
 
@@ -223,11 +224,27 @@ class _Home extends State<Home> {
         itemCount: movies.length,
         itemBuilder: (context, index) {
           final movie = movies[index];
-          return MovieCard(
-            title: movie['title'],
-            posterUrl: movie['posterUrl'],
-            genre: movie['genre'],
-            rating: movie['rating'],
+          return GestureDetector( // Wrap MovieCard with GestureDetector
+            onTap: () {
+              // Navigate to the desired page here
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => moviepage( // Assuming MovieDetailsPage is your target page
+                    title: movie['title'],
+                    posterUrl: movie['posterUrl'],
+                    genre: movie['genre'],
+                    rating: movie['rating'],
+                  ),
+                ),
+              );
+            },
+            child: MovieCard(
+              title: movie['title'],
+              posterUrl: movie['posterUrl'],
+              genre: movie['genre'],
+              rating: movie['rating'],
+            ),
           );
         },
       ),
@@ -252,7 +269,7 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 180, // Adjusted width for iPhone 12 Pro
+      width: 180,
       child: Card(
         color: Colors.black.withOpacity(0.5), // Set the background color
         child: Column(

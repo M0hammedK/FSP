@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/paymentpage.dart';
+import 'package:untitled1/sign_up.dart';
 
 class moviepage extends StatelessWidget {
   final String title;
@@ -108,7 +110,10 @@ class moviepage extends StatelessWidget {
                       child: ElevatedButton(
                         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.deepPurple)),
                         onPressed: () {
-                          // Handle "Get Ticket" button press
+                          (sign_up.username.text != "")?
+                          Navigator.push( context, MaterialPageRoute(builder: (context) => paymentpage(title: title, posterUrl: posterUrl,),),)
+                              :
+                            Navigator.pushNamed(context, 'sign_in');
                         },
                         child: const Text('Get Ticket', style: TextStyle(fontSize: 22, color: Colors.white),),
                       ),

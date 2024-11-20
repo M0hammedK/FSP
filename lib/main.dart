@@ -9,12 +9,16 @@ import 'package:untitled1/moviepage.dart';
 import 'package:untitled1/paymentpage.dart';
 import 'package:image/image.dart' as img;
 
+import 'TicketsPage.dart';
+
+
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
 
   // This widget is the root of your application.
   @override
@@ -36,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         'home': (context) => Home(),
         'sign_in': (context) => sing_in(),
         'adminpage': (context) => AdminPage(),
+        'TicketsPage': (context) => TicketsPage(),
       },
       home: Home(),
     );

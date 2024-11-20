@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/TicketsPage.dart';
 import 'package:untitled1/adminpage.dart';
 import 'movie_data.dart';
 import 'moviepage.dart';
@@ -84,7 +85,7 @@ class _Home extends State<Home> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const Home()),
+                                        builder: (context) => const TicketsPage()),
                                   );
                                 },
                               )

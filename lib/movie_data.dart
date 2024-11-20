@@ -54,4 +54,14 @@ class MovieData {
       'rating': 8.0,
     },
   ];
+
+
+  List<Map<String, dynamic>> Tickets= [
+
+    {
+      'title':''
+      ,
+      'userEmail':''
+    }
+  ];
 }

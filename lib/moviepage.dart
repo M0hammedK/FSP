@@ -111,7 +111,7 @@ class moviepage extends StatelessWidget {
                         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.deepPurple)),
                         onPressed: () {
                           (sign_up.username.text != "")?
-                          Navigator.push( context, MaterialPageRoute(builder: (context) => paymentpage(title: title, posterUrl: posterUrl,),),)
+                          Navigator.push( context, MaterialPageRoute(builder: (context) => paymentpage(title: title, posterUrl: posterUrl,email:sign_up.email.text),),)
                               :
                             Navigator.pushNamed(context, 'sign_in');
                         },

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import './movie_data.dart';
+import 'sign_up.dart';
+import 'sign_in.dart';
 
 class paymentpage extends StatefulWidget {
+  final MovieData movieData = MovieData(); // Reference the singleton
+
   final String title;
   final String posterUrl;
 
-  const paymentpage({
+   paymentpage({
     Key? key,
     required this.title,
-    required this.posterUrl,
+    required this.posterUrl, required String email,
       }) : super(key: key);
 
   @override
@@ -66,27 +71,37 @@ class _paymentpageState extends State<paymentpage> {
                 },
               ),
               const SizedBox(height: 30),
-              ElevatedButton(onPressed: () {
-                if (_formKey.currentState!.validate()) {
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                setState(() {
+                  _isLoading = true;
+                });
+                // Simulate payment processing delay
+                Future.delayed(const Duration(seconds: 2), () {
                   setState(() {
-                    _isLoading = true;
+                    _isLoading = false;
                   });
-                  // Simulate payment processing delay
-                  Future.delayed(const Duration(seconds: 2), () {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    // Show success message or navigate to confirmation page
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Payment Successful!')),
-                    );
+
+                  // Add the ticket to MovieData
+                  MovieData().Tickets.add({
+                    'title': widget.title, // Movie title
+                    'userEmail': sign_up.email.text, // User email from sign_up
                   });
-                }
-              },
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Get Now'),
-              ),
+
+                  // Show success message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Payment Successful! Ticket added.')),
+                  );
+
+                  // Navigate back or to another page (if needed)
+                });
+              }
+            },
+            child: _isLoading
+                ? const CircularProgressIndicator()
+                : const Text('Get Now'),
+          ),
             ],
           ),
         ),

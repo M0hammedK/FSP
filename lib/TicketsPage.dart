@@ -8,16 +8,22 @@ class TicketsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MovieData movieData = MovieData();
+    final isAdmin = sign_up.username.text == "admin";
     final userEmail = sign_up.email.text.trim();
 
-    // Filter tickets for the logged-in user
-    final userTickets = movieData.Tickets
+    // Get tickets based on role
+    final tickets = isAdmin
+        ? movieData.Tickets // Admin sees all tickets
+        : movieData.Tickets
         .where((ticket) => ticket['userEmail'] == userEmail)
         .toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Tickets'),
+        title: Text(
+          isAdmin ? 'All Tickets' : 'Your Tickets',
+          style: const TextStyle(color: Colors.deepPurple),
+        ),
         backgroundColor: Colors.black.withOpacity(0.8),
       ),
       body: Stack(
@@ -28,18 +34,20 @@ class TicketsPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          userTickets.isEmpty
-              ? const Center(
+          tickets.isEmpty
+              ? Center(
             child: Text(
-              'No tickets yet!',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              isAdmin
+                  ? 'No tickets available!'
+                  : 'No tickets yet!',
+              style: const TextStyle(fontSize: 20, color: Colors.white),
             ),
           )
               : ListView.builder(
             padding: const EdgeInsets.all(8.0),
-            itemCount: userTickets.length,
+            itemCount: tickets.length,
             itemBuilder: (context, index) {
-              final ticket = userTickets[index];
+              final ticket = tickets[index];
               return Card(
                 color: Colors.black.withOpacity(0.6),
                 margin: const EdgeInsets.symmetric(vertical: 8.0),

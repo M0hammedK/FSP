@@ -137,13 +137,13 @@ class _Home extends State<Home> {
                             : ListTile(
                                 leading: const Icon(Icons.local_movies_sharp,
                                     color: Colors.white),
-                                title: const Text('Your Tickets',
+                                title: const Text('All Tickets',
                                     style: TextStyle(color: Colors.white)),
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const Home()),
+                                        builder: (context) => const TicketsPage()),
                                   );
                                 },
                               ),

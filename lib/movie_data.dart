@@ -59,9 +59,9 @@ class MovieData {
   List<Map<String, dynamic>> Tickets= [
 
     {
-      'title':''
+      'title':'Default Ticket'
       ,
-      'userEmail':''
+      'userEmail':'Default Ticket'
     }
   ];
 }

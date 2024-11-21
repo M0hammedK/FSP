@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'movie_data.dart';
 import 'home.dart';
@@ -170,33 +172,53 @@ class _AdminPageState extends State<AdminPage> {
         TextEditingController(text: movie['genre']);
     final TextEditingController ratingController =
         TextEditingController(text: movie['rating'].toString());
+    final TextEditingController durationController =
+        TextEditingController(text: movie['duration']);
+    final TextEditingController dateController =
+        TextEditingController(text: movie['date']);
+    final TextEditingController postUrlController =
+        TextEditingController(text: movie['posterUrl']);
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Edit Movie'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-              ),
-              TextField(
-                controller: storyController,
-                decoration: const InputDecoration(labelText: 'Story'),
-              ),
-              TextField(
-                controller: genreController,
-                decoration: const InputDecoration(labelText: 'Genre'),
-              ),
-              TextField(
-                controller: ratingController,
-                decoration: const InputDecoration(labelText: 'Rating'),
-                keyboardType: TextInputType.number,
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                ),
+                TextField(
+                  controller: storyController,
+                  decoration: const InputDecoration(labelText: 'Story'),
+                ),
+                TextField(
+                  controller: genreController,
+                  decoration: const InputDecoration(labelText: 'Genre'),
+                ),
+                TextField(
+                  controller: ratingController,
+                  decoration: const InputDecoration(labelText: 'Rating'),
+                  keyboardType: TextInputType.number,
+                ),
+                TextField(
+                  controller: durationController,
+                  decoration: const InputDecoration(labelText: 'Duration'),
+                ),
+                TextField(
+                  controller: dateController,
+                  decoration: const InputDecoration(labelText: 'Date'),
+                ),
+                TextField(
+                  controller: postUrlController,
+                  decoration: const InputDecoration(labelText: 'PostUrl'),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -212,6 +234,9 @@ class _AdminPageState extends State<AdminPage> {
                   movie['story'] = storyController.text;
                   movie['genre'] = genreController.text;
                   movie['rating'] = double.parse(ratingController.text);
+                  movie['duration'] = durationController.text;
+                  movie['date'] = dateController.text;
+                  movie['posterUrl'] = postUrlController.text;
                 });
                 Navigator.pop(context); // Close the dialog
               },
@@ -262,37 +287,49 @@ class _AdminPageState extends State<AdminPage> {
     final TextEditingController storyController = TextEditingController();
     final TextEditingController ratingController = TextEditingController();
     final TextEditingController posterUrlController = TextEditingController();
+    final TextEditingController durationController = TextEditingController();
+    final TextEditingController dateController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Add New Movie'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-              ),
-              TextField(
-                controller: storyController,
-                decoration: const InputDecoration(labelText: 'Story'),
-              ),
-              TextField(
-                controller: genreController,
-                decoration: const InputDecoration(labelText: 'Genre'),
-              ),
-              TextField(
-                controller: ratingController,
-                decoration: const InputDecoration(labelText: 'Rating'),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: posterUrlController,
-                decoration: const InputDecoration(labelText: 'Poster URL'),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                ),
+                TextField(
+                  controller: storyController,
+                  decoration: const InputDecoration(labelText: 'Story'),
+                ),
+                TextField(
+                  controller: genreController,
+                  decoration: const InputDecoration(labelText: 'Genre'),
+                ),
+                TextField(
+                  controller: ratingController,
+                  decoration: const InputDecoration(labelText: 'Rating'),
+                  keyboardType: TextInputType.number,
+                ),
+                TextField(
+                  controller: durationController,
+                  decoration: const InputDecoration(labelText: 'Duration'),
+                ),
+                TextField(
+                  controller: dateController,
+                  decoration: const InputDecoration(labelText: 'Date'),
+                ),
+                TextField(
+                  controller: posterUrlController,
+                  decoration: const InputDecoration(labelText: 'Poster URL'),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -310,6 +347,8 @@ class _AdminPageState extends State<AdminPage> {
                     'genre': genreController.text,
                     'rating': double.parse(ratingController.text),
                     'posterUrl': posterUrlController.text,
+                    'duration': durationController.text,
+                    'date': dateController.text,
                   };
                   movieData.todaysMovies.add(newMovie); // Add to today's movies
                 });

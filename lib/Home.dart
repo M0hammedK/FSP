@@ -211,7 +211,7 @@ class _Home extends State<Home> {
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // Updated color
+          color: Colors.deepPurple, // Updated color
         ),
       ),
     );
@@ -237,6 +237,8 @@ class _Home extends State<Home> {
                     posterUrl: movie['posterUrl'],
                     genre: movie['genre'],
                     rating: movie['rating'],
+                    duration: movie['duration'],
+                    date: movie['date'],
                   ),
                 ),
               );

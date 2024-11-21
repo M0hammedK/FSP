@@ -18,17 +18,24 @@ class sign_up extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<sign_up> {
-  final List<String> phones = ["70", "71", "73","77", "78"];
+  final List<String> phones = ["70", "71", "73", "77", "78"];
   static final TextEditingController _username = TextEditingController();
   static final TextEditingController _email = TextEditingController();
   static final TextEditingController _password1 = TextEditingController();
   static final TextEditingController _password2 = TextEditingController();
   static final TextEditingController _phone = TextEditingController();
   static File? _image;
+  bool _obsecureText = true;
+
+  void _password_visibality() {
+    setState(() {
+      _obsecureText = !_obsecureText;
+    });
+  }
 
   Future getImage() async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -36,6 +43,7 @@ class _SignUpPageState extends State<sign_up> {
         print('No image selected.');
       }
     });
+
   }
 
   @override
@@ -62,120 +70,110 @@ class _SignUpPageState extends State<sign_up> {
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: getImage,
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundImage:
-                          _image != null ? FileImage(_image!) : null,
-                      child: _image == null
-                          ? const Icon(Icons.add_a_photo, size: 40)
-                          : null,
+              child: Form(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: getImage,
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage:
+                            _image != null ? FileImage(_image!) : null,
+                        child: _image == null
+                            ? const Icon(Icons.add_a_photo, size: 40)
+                            : null,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _username,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _username,
+                      autofocus: true,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.account_circle),
+                        labelText: 'Username',
+                        labelStyle: const TextStyle(color: Colors.deepPurple,
+                          fontSize: 20, fontWeight: FontWeight.bold,),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
+                      ),
                     ),
-                    decoration: InputDecoration(
-                      labelText: 'Theater Name',
-                      labelStyle: const TextStyle(color: Colors.deepPurple,
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller: _email,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.email_outlined),
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(color: Colors.deepPurple,
+                          fontSize: 20, fontWeight: FontWeight.bold,),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller: _password1,
+                      obscureText: _obsecureText,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.password),
+                        labelStyle: const TextStyle(color: Colors.deepPurple,
                         fontSize: 20, fontWeight: FontWeight.bold,),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
+                        suffixIcon: IconButton(onPressed: _password_visibality, icon: Icon(!_obsecureText ? Icons.visibility :  Icons.visibility_off)),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    controller: _email,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller: _password2,
+                      obscureText: _obsecureText,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(onPressed: _password_visibality, icon: Icon(!_obsecureText ? Icons.visibility :  Icons.visibility_off)),
+                        labelText: 'Confirm Password',
+                        labelStyle: const TextStyle(color: Colors.deepPurple,
+                          fontSize: 20, fontWeight: FontWeight.bold,),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
+                      ),
                     ),
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.deepPurple,
-                        fontSize: 20, fontWeight: FontWeight.bold,),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {
+                        gotosign_in();
+                      },
+                      child: const Text('Sign Up',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                     ),
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    controller: _password1,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(color: Colors.deepPurple,
-                        fontSize: 20, fontWeight: FontWeight.bold,),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
-                    ),
-                    obscureText: true, // Hides password input
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    controller: _password2,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      labelStyle: const TextStyle(color: Colors.deepPurple,
-                        fontSize: 20, fontWeight: FontWeight.bold,),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
-                    ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    controller: _phone,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Contact Number',
-                      labelStyle: const TextStyle(color: Colors.deepPurple,
-                        fontSize: 20, fontWeight: FontWeight.bold,),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      gotosign_in();
-                    },
-                    child: const Text('Sign Up',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

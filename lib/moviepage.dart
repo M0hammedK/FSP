@@ -7,6 +7,8 @@ class moviepage extends StatelessWidget {
   final String posterUrl;
   final String genre;
   final double rating;
+  final String duration;
+  final String date;
   final String story; // Add story property
 
   const moviepage({
@@ -16,6 +18,8 @@ class moviepage extends StatelessWidget {
     required this.genre,
     required this.rating,
     required this.story, // Require story in constructor
+    required this.duration, // Require story in constructor
+    required this.date, // Require story in constructor
   }) : super(key: key);
 
   @override
@@ -83,14 +87,35 @@ class moviepage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    Text(
-                      'Genre: $genre',
-                      style: const TextStyle(fontSize: 22, color: Colors.red),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          const TextSpan(
+                            text: 'Genre: ',
+                            style: const TextStyle(fontSize: 22, color: Colors.red, fontWeight: FontWeight.bold,),
+                          ),
+                          TextSpan(
+                            text: genre,
+                            style: const TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      'Rating: $rating',
-                      style: const TextStyle(fontSize: 22, color: Colors.blue),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          const TextSpan(
+                            text: 'Rating: ',
+                            style: const TextStyle(fontSize: 22, color: Colors.yellow, fontWeight: FontWeight.bold,),
+                          ),
+                          TextSpan(
+                            text: rating.toString(),
+                            style: const TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
                     ),
+                  ),
                     const SizedBox(height: 20),
                     const Text(
                       'Story:',
@@ -104,6 +129,36 @@ class moviepage extends StatelessWidget {
                     Text(
                       story,
                       style: const TextStyle(fontSize: 22, color: Colors.white),
+                    ),
+                    const SizedBox(height: 25),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          const TextSpan(
+                            text: 'Duration: ',
+                            style: const TextStyle(fontSize: 22, color: Colors.blue, fontWeight: FontWeight.bold,),
+                          ),
+                          TextSpan(
+                            text: duration,
+                            style: const TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          const TextSpan(
+                            text: 'Date & Time: ',
+                            style: const TextStyle(fontSize: 22, color: Colors.red, fontWeight: FontWeight.bold,),
+                          ),
+                          TextSpan(
+                            text: date,
+                            style: const TextStyle(fontSize: 22, color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 30),
                     Center(// Center the button

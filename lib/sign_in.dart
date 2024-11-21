@@ -50,71 +50,78 @@ class _sing_inState extends State<sing_in> {
             ),
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 250,
-                  ),
-                  TextFormField(
-                    controller: _email,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: Form(
+                child: Column(
+                  children: <Widget>[
+
+                    const SizedBox(
+                      height: 250,
                     ),
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(
+                    TextFormField(
+                      controller: _email,
+                      autofocus: true,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
                         color: Colors.deepPurple,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.email_outlined),
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  TextFormField(
-                    controller: _password,
-                    obscureText: _obsecureText,
-                    cursorColor: Colors.deepPurple,
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(
+                      height: 40,
                     ),
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(
+                    TextFormField(
+                      controller: _password,
+                      obscureText: _obsecureText,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
                         color: Colors.deepPurple,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
-                      border: const OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        goto_home();
-                      },
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        prefixIcon: Icon(Icons.password),
+                        suffixIcon: IconButton(onPressed: _password_visibality, icon: Icon(!_obsecureText ? Icons.visibility :  Icons.visibility_off)),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
                       ),
                     ),
-                  )
-                ],
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          goto_home();
+                        },
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

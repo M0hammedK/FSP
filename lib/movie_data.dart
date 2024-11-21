@@ -13,6 +13,8 @@ class MovieData {
           ' the physicist who had a large hand in the development of the atomic bombs'
           ' that brought an end to World War II.',
       'posterUrl': 'images/Oppenhiemer.jpg',
+      'duration': '02:31:23',
+      'date': '12/12/2024 22:00',
       'genre': 'Biography, Drama, History',
       'rating': 8.6,
     },
@@ -22,6 +24,8 @@ class MovieData {
     ' Forced to venture into the unknown, they realize the creatures that hunt by sound'
     ' are not the only threats lurking beyond the sand path.',
       'posterUrl': 'images/QuietPlace.jpg',
+      'duration': '01:35:33',
+      'date': '1/11/2024 00:00',
       'genre': 'Adventure, Comedy, Fantasy',
       'rating': 7.6,
     },
@@ -30,6 +34,8 @@ class MovieData {
       'story': 'When a group of friends discover how to conjure spirits using an embalmed hand,'
     ' they become hooked on the new thrill, until one of them goes too far and unleashes terrifying supernatural forces.',
       'posterUrl': 'images/Talktome.jpg',
+      'duration': '02:05:00',
+      'date': '01/01/2025 20:00',
       'genre': 'Horror, Mystery, Thriller',
       'rating': 7.4,
     },
@@ -41,6 +47,8 @@ class MovieData {
       'story': 'When a group of friends discover how to conjure spirits using an embalmed hand,'
           ' they become hooked on the new thrill, until one of them goes too far and unleashes terrifying supernatural forces.',
       'posterUrl': 'images/Talktome.jpg',
+      'duration': '02:05:00',
+      'date': '01/01/2025 20:00',
       'genre': 'Genre 4',
       'rating': 7.2,
     },
@@ -50,6 +58,8 @@ class MovieData {
           ' the physicist who had a large hand in the development of the atomic bombs'
           ' that brought an end to World War II.',
       'posterUrl': 'images/Oppenhiemer.jpg',
+      'duration': '02:31:23',
+      'date': '12/12/2024 22:00',
       'genre': 'Genre 5',
       'rating': 8.0,
     },

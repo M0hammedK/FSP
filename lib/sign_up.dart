@@ -156,6 +156,7 @@ class _SignUpPageState extends State<sign_up> {
                         fontWeight: FontWeight.bold,
                       ),
                       decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.password),
                         suffixIcon: IconButton(onPressed: _password_visibality, icon: Icon(!_obsecureText ? Icons.visibility :  Icons.visibility_off)),
                         labelText: 'Confirm Password',
                         labelStyle: const TextStyle(color: Colors.deepPurple,

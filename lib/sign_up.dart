@@ -7,12 +7,10 @@ class sign_up extends StatefulWidget {
   static TextEditingController email = _SignUpPageState._email;
   static TextEditingController username = _SignUpPageState._username;
   static TextEditingController password = _SignUpPageState._password1;
-  static TextEditingController phone = _SignUpPageState._phone;
-  static File? image = _image;
+  static File? image;
 
   const sign_up({super.key});
 
-  static File? get _image => _SignUpPageState._image;
   @override
   State<sign_up> createState() => _SignUpPageState();
 }
@@ -23,8 +21,6 @@ class _SignUpPageState extends State<sign_up> {
   static final TextEditingController _email = TextEditingController();
   static final TextEditingController _password1 = TextEditingController();
   static final TextEditingController _password2 = TextEditingController();
-  static final TextEditingController _phone = TextEditingController();
-  static File? _image;
   bool _obsecureText = true;
 
   void _password_visibality() {
@@ -38,7 +34,7 @@ class _SignUpPageState extends State<sign_up> {
     await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        sign_up.image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
@@ -79,8 +75,8 @@ class _SignUpPageState extends State<sign_up> {
                       child: CircleAvatar(
                         radius: 60,
                         backgroundImage:
-                            _image != null ? FileImage(_image!) : null,
-                        child: _image == null
+                            sign_up.image != null ? FileImage(sign_up.image!) : null,
+                        child: sign_up.image == null
                             ? const Icon(Icons.add_a_photo, size: 40)
                             : null,
                       ),
@@ -187,11 +183,7 @@ class _SignUpPageState extends State<sign_up> {
     if(_username.text.trim() != ""){
       if(_email.text.trim() != ""){
         if(_password1.text.trim() != "" && _password1.text.trim() == _password2.text.trim()){
-          if(_phone.text.trim() != "" && _phone.text.length == 9){
-            if(phones.contains(_phone.text.trim().substring(0,2))){
-                Navigator.pushNamed(context, "sign_in");
-            }
-          }
+          Navigator.pushNamed(context, "sign_in");
         }
       }
     }

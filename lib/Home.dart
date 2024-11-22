@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:untitled1/TicketsPage.dart';
 import 'package:untitled1/adminpage.dart';
@@ -42,10 +44,10 @@ class _Home extends State<Home> {
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: (sign_up.image != null)
-                                ? FileImage(sign_up.image!)
-                                : const AssetImage('images/CinemaTech.png')
-                                    as ImageProvider,
+                            backgroundImage: (sign_up.image != null) ?
+                                FileImage(sign_up.image!)
+                                 : const AssetImage('images/CinemaTech.png')
+                                     as ImageProvider,
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -155,7 +157,7 @@ class _Home extends State<Home> {
                                 style: TextStyle(color: Colors.white)),
                             onTap: () {
                               sign_up.username.text = "";
-                              sign_up.image = null;
+                              sign_up.image = File("images/CinemaTech.png");
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -8,11 +8,14 @@ class paymentpage extends StatefulWidget {
 
   final String title;
   final String posterUrl;
+  final String duration;
+  final String date;
+  final String email;
 
    paymentpage({
     Key? key,
     required this.title,
-    required this.posterUrl, required String email,
+    required this.posterUrl, required this.duration, required this.date, required this.email,
       }) : super(key: key);
 
   @override
@@ -78,7 +81,7 @@ class _paymentpageState extends State<paymentpage> {
                   _isLoading = true;
                 });
                 // Simulate payment processing delay
-                Future.delayed(const Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 1), () {
                   setState(() {
                     _isLoading = false;
                   });
@@ -86,17 +89,22 @@ class _paymentpageState extends State<paymentpage> {
                   // Add the ticket to MovieData
                   MovieData().Tickets.add({
                     'title': widget.title, // Movie title
-                    'userEmail': sign_up.email.text, // User email from sign_up
+                    'userEmail': sign_up.email.text,
+                    'movieimg':widget.posterUrl,
+                    'duration':widget.duration,
+                    'date':widget.date
                   });
 
                   // Show success message
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Payment Successful! Ticket added.')),
                   );
+                  Navigator.pushNamed(context, 'home');
 
-                  // Navigate back or to another page (if needed)
+
                 });
               }
+
             },
             child: _isLoading
                 ? const CircularProgressIndicator()

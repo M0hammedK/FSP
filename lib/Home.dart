@@ -148,10 +148,16 @@ class _Home extends State<Home> {
                                 onTap: () {
                                   sign_up.username.text = "";
                                   sign_up.image = null;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Signed out.')),
+                                  );
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const Home()),
+                                        builder: (context) => const Home()
+                                    ),
+
                                   );
                                 },
                               )

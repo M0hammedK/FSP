@@ -49,23 +49,55 @@ class TicketsPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final ticket = tickets[index];
               return Card(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withOpacity(0.6), // Background color
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: ListTile(
-                  leading: const Icon(
-                    Icons.movie,
-                    color: Colors.deepPurple,
+                  // Leading movie image (network only)
+                  leading: Image.network(
+                    ticket['movieimg'],
+                    width: 70,
+                    height: 140,
+                    fit: BoxFit.cover,
                   ),
+                  // Movie title
                   title: Text(
                     ticket['title'],
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  subtitle: Text(
-                    'User: ${ticket['userEmail']}',
-                    style: const TextStyle(color: Colors.grey),
+                  // Duration and date in subtitle
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.access_time, color: Colors.grey, size: 18), // Duration icon
+                          const SizedBox(width: 8),
+                          Text(
+                            'Duration: ${ticket['duration']}',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8), // Add some spacing between the rows
+                      Row(
+                        children: [
+                          Icon(Icons.calendar_today, color: Colors.grey, size: 18), // Date icon
+                          const SizedBox(width: 8),
+                          Text(
+                            'Date: ${ticket['date']}',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
+
                 ),
               );
+
             },
           ),
         ],

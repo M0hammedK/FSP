@@ -69,9 +69,11 @@ class MovieData {
   List<Map<String, dynamic>> Tickets= [
 
     {
-      'title':'Default Ticket'
-      ,
-      'userEmail':'Default Ticket'
+      'title':'Oppenheimer',
+      'userEmail':'Default Ticket',
+      'duration': '02:31:23',
+      'date': '12/12/2024 22:00',
+      'movieimg':'images/oppenhiemer.jpg'
     }
   ];
 }

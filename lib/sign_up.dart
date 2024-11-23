@@ -21,25 +21,74 @@ class _SignUpPageState extends State<sign_up> {
   static final TextEditingController _email = TextEditingController();
   static final TextEditingController _password1 = TextEditingController();
   static final TextEditingController _password2 = TextEditingController();
+  static final TextEditingController _phone = TextEditingController();
   bool _obsecureText = true;
 
-  void _password_visibality() {
+  void _passwordVisibility() {
     setState(() {
       _obsecureText = !_obsecureText;
     });
   }
 
   Future getImage() async {
-    final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         sign_up.image = File(pickedFile.path);
       } else {
-        print('No image selected.');
+        sign_up.image = null; // Reset the image if no file was picked
       }
     });
+  }
 
+
+  void validateAndSignUp() {
+    final phone = _phone.text.trim();
+
+    if (_username.text.trim() == "") {
+      _showSnackBar("Username cannot be empty");
+      return;
+    }
+
+    if (_email.text.trim() == "") {
+      _showSnackBar("Email cannot be empty");
+      return;
+    }
+
+    if (_password1.text.trim() == "" || _password1.text.trim() != _password2.text.trim()) {
+      _showSnackBar("Passwords do not match or are empty");
+      return;
+    }
+
+    if (phone.isEmpty || phone.length != 9) {
+      _showSnackBar("Invalid phone number. Must have at least 8 digits");
+      return;
+    }
+
+    final phonePrefix = phone.substring(0, 2);
+
+    if (!phones.contains(phonePrefix)) {
+      _showSnackBar("Invalid phone number. Must start with one of ${phones.join(', ')}");
+      return;
+    }
+
+    if (sign_up.image == null) {
+      _showSnackBar("Please select an image");
+      return;
+    }
+    // If all validations pass
+    Navigator.pushNamed(context, "sign_in");
+  }
+
+
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
@@ -56,11 +105,17 @@ class _SignUpPageState extends State<sign_up> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: const Text('Sign Up', style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold, fontSize: 25),),
+              title: const Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: Colors.deepPurple,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
               backgroundColor: Colors.black.withOpacity(0.5),
               elevation: 10,
               iconTheme: const IconThemeData(
-                // Change drawer icon color here
                 color: Colors.deepPurple,
               ),
             ),
@@ -75,7 +130,7 @@ class _SignUpPageState extends State<sign_up> {
                       child: CircleAvatar(
                         radius: 60,
                         backgroundImage:
-                            sign_up.image != null ? FileImage(sign_up.image!) : null,
+                        sign_up.image != null ? FileImage(sign_up.image!) : null,
                         child: sign_up.image == null
                             ? const Icon(Icons.add_a_photo, size: 40)
                             : null,
@@ -92,10 +147,13 @@ class _SignUpPageState extends State<sign_up> {
                         fontWeight: FontWeight.bold,
                       ),
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.account_circle),
+                        prefixIcon: const Icon(Icons.account_circle),
                         labelText: 'Username',
-                        labelStyle: const TextStyle(color: Colors.deepPurple,
-                          fontSize: 20, fontWeight: FontWeight.bold,),
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                         border: const OutlineInputBorder(),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.5),
@@ -111,10 +169,36 @@ class _SignUpPageState extends State<sign_up> {
                         fontWeight: FontWeight.bold,
                       ),
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email_outlined),
+                        prefixIcon: const Icon(Icons.email_outlined),
                         labelText: 'Email',
-                        labelStyle: const TextStyle(color: Colors.deepPurple,
-                          fontSize: 20, fontWeight: FontWeight.bold,),
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller: _phone,
+                      keyboardType: TextInputType.number,
+                      cursorColor: Colors.deepPurple,
+                      style: const TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.phone),
+                        labelText: 'Phone Number',
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                         border: const OutlineInputBorder(),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.5),
@@ -132,10 +216,18 @@ class _SignUpPageState extends State<sign_up> {
                       ),
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: Icon(Icons.password),
-                        labelStyle: const TextStyle(color: Colors.deepPurple,
-                        fontSize: 20, fontWeight: FontWeight.bold,),
-                        suffixIcon: IconButton(onPressed: _password_visibality, icon: Icon(!_obsecureText ? Icons.visibility :  Icons.visibility_off)),
+                        prefixIcon: const Icon(Icons.password),
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: _passwordVisibility,
+                          icon: Icon(!_obsecureText
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
                         border: const OutlineInputBorder(),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.5),
@@ -152,11 +244,19 @@ class _SignUpPageState extends State<sign_up> {
                         fontWeight: FontWeight.bold,
                       ),
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.password),
-                        suffixIcon: IconButton(onPressed: _password_visibality, icon: Icon(!_obsecureText ? Icons.visibility :  Icons.visibility_off)),
+                        prefixIcon: const Icon(Icons.password),
+                        suffixIcon: IconButton(
+                          onPressed: _passwordVisibility,
+                          icon: Icon(!_obsecureText
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
                         labelText: 'Confirm Password',
-                        labelStyle: const TextStyle(color: Colors.deepPurple,
-                          fontSize: 20, fontWeight: FontWeight.bold,),
+                        labelStyle: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                         border: const OutlineInputBorder(),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.5),
@@ -164,10 +264,14 @@ class _SignUpPageState extends State<sign_up> {
                     ),
                     const SizedBox(height: 15),
                     ElevatedButton(
-                      onPressed: () {
-                        gotosign_in();
-                      },
-                      child: const Text('Sign Up',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      onPressed: validateAndSignUp,
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -177,15 +281,5 @@ class _SignUpPageState extends State<sign_up> {
         ],
       ),
     );
-  }
-
-  void gotosign_in() {
-    if(_username.text.trim() != ""){
-      if(_email.text.trim() != ""){
-        if(_password1.text.trim() != "" && _password1.text.trim() == _password2.text.trim()){
-          Navigator.pushNamed(context, "sign_in");
-        }
-      }
-    }
   }
 }

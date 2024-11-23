@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,10 +18,26 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  final MovieData movieData = MovieData(); // Reference the singleton
+  final MovieData movieData = MovieData();
+  String _searchTerm = '';
+  Timer? _debounce;
+  bool _isSearching = false;
 
   @override
   Widget build(BuildContext context) {
+    final filteredTodaysMovies = movieData.todaysMovies.where((movie) {
+      final title = movie['title'].toLowerCase();
+      final searchTerm = _searchTerm.toLowerCase();
+      return title.contains(searchTerm);
+    }).toList();
+
+    final filteredUpcomingMovies = movieData.upcomingMovies.where((movie) {
+      final title = movie['title'].toLowerCase();
+      final searchTerm = _searchTerm.toLowerCase();
+      return title.contains(searchTerm);
+    }).toList();
+
+
     return Scaffold(
       body: Stack(
         children: [
@@ -44,10 +62,10 @@ class _Home extends State<Home> {
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: (sign_up.image != null) ?
-                                FileImage(sign_up.image!)
-                                 : const AssetImage('images/CinemaTech.png')
-                                     as ImageProvider,
+                            backgroundImage: (sign_up.image != null)
+                                ? FileImage(sign_up.image!)
+                                : const AssetImage('images/CinemaTech.png')
+                                    as ImageProvider,
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -87,7 +105,8 @@ class _Home extends State<Home> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const TicketsPage()),
+                                        builder: (context) =>
+                                            const TicketsPage()),
                                   );
                                 },
                               )
@@ -145,7 +164,8 @@ class _Home extends State<Home> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const TicketsPage()),
+                                        builder: (context) =>
+                                            const TicketsPage()),
                                   );
                                 },
                               ),
@@ -172,30 +192,69 @@ class _Home extends State<Home> {
             ),
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: const Text(
-                'CinemaTech',
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
+              title: _isSearching
+                  ? TextField(
+                      autofocus: true, // Automatically focus the search field
+                      onChanged: (text) {
+                        if (_debounce?.isActive ?? false) _debounce?.cancel();
+                        _debounce =
+                            Timer(const Duration(milliseconds: 500), () {
+                          setState(() {
+                            _searchTerm = text;
+                          });
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search movies...',
+                        hintStyle: const TextStyle(color: Colors.white),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.close, color: Colors.white),
+                          onPressed: () {
+                            setState(() {
+                              _searchTerm = '';
+                              _isSearching = false; // Close the search field
+                            });
+                          },
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  : const Text(
+                      'CinemaTech',
+                      style: TextStyle(
+                        color: Colors.deepPurple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
               backgroundColor: Colors.black.withOpacity(0.8),
               elevation: 10,
               iconTheme: const IconThemeData(
-                // Change drawer icon color here
                 color: Colors.deepPurple,
               ),
+              actions: [
+                if (!_isSearching)
+                IconButton(
+                  icon: const Icon(Icons.search, color: Colors.deepPurple),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true; // Open the search field
+                    });
+                  },
+                ),
+              ],
             ),
             body: Container(
               child: ListView(
                 children: [
                   _buildSectionHeader('Today\'s Movies'),
-                  _buildMovieCarousel(
-                      movieData.todaysMovies), // Access singleton's data
+                  (_searchTerm.isEmpty)
+                      ? _buildMovieCarousel(movieData.todaysMovies)
+                      : _buildMovieCarousel(filteredTodaysMovies),
                   _buildSectionHeader('Upcoming Movies'),
-                  _buildMovieCarousel(
-                      movieData.upcomingMovies), // Access singleton's data
+                  (_searchTerm.isEmpty)
+                      ? _buildMovieCarousel(movieData.upcomingMovies)
+                      : _buildMovieCarousel(filteredUpcomingMovies),
                 ],
               ),
             ),
@@ -227,13 +286,15 @@ class _Home extends State<Home> {
         itemCount: movies.length,
         itemBuilder: (context, index) {
           final movie = movies[index];
-          return GestureDetector( // Wrap MovieCard with GestureDetector
+          return GestureDetector(
+            // Wrap MovieCard with GestureDetector
             onTap: () {
               // Navigate to the desired page here
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => moviepage( // Assuming MovieDetailsPage is your target page
+                  builder: (context) => moviepage(
+                    // Assuming MovieDetailsPage is your target page
                     title: movie['title'],
                     story: movie['story'],
                     posterUrl: movie['posterUrl'],
@@ -255,6 +316,13 @@ class _Home extends State<Home> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _debounce
+        ?.cancel(); // Cancel the debounce timer when the widget is disposed
+    super.dispose();
   }
 }
 

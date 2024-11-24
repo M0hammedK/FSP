@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'movie_data.dart';
@@ -13,9 +13,24 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   final MovieData movieData = MovieData(); // Access the singleton
+  String _searchTerm = '';
+  Timer? _debounce;
+  bool _isSearching = false;
 
   @override
   Widget build(BuildContext context) {
+    final filteredTodaysMovies = movieData.todaysMovies.where((movie) {
+      final title = movie['title'].toLowerCase();
+      final searchTerm = _searchTerm.toLowerCase();
+      return title.contains(searchTerm);
+    }).toList();
+
+    final filteredUpcomingMovies = movieData.upcomingMovies.where((movie) {
+      final title = movie['title'].toLowerCase();
+      final searchTerm = _searchTerm.toLowerCase();
+      return title.contains(searchTerm);
+    }).toList();
+
     return Scaffold(
       body:Stack(
         children: [
@@ -28,29 +43,71 @@ class _AdminPageState extends State<AdminPage> {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: const Text('Admin Panel', style: TextStyle(color: Colors.white)),
-            backgroundColor: Colors.black87.withOpacity(0.7),
-            elevation: 10,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () {
-                // Navigate back to the Home Page
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
+            title: _isSearching
+                ? TextField(
+              autofocus: true, // Automatically focus the search field
+              onChanged: (text) {
+                if (_debounce?.isActive ?? false) _debounce?.cancel();
+                _debounce =
+                    Timer(const Duration(milliseconds: 500), () {
+                      setState(() {
+                        _searchTerm = text;
+                      });
+                    });
               },
+              decoration: InputDecoration(
+                hintText: 'Search movies...',
+                hintStyle: const TextStyle(color: Colors.white),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      _searchTerm = '';
+                      _isSearching = false; // Close the search field
+                    });
+                  },
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+            )
+                : const Text(
+              'CinemaTech',
+              style: TextStyle(
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
             ),
+            backgroundColor: Colors.black.withOpacity(0.8),
+            elevation: 10,
+            iconTheme: const IconThemeData(
+              color: Colors.deepPurple,
+            ),
+            actions: [
+              if (!_isSearching)
+                IconButton(
+                  icon: const Icon(Icons.search, color: Colors.deepPurple),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true; // Open the search field
+                    });
+                  },
+                ),
+            ],
           ),
           body: Stack(
             children: [
 
               ListView(
                 children: [
-                  _buildSectionHeader('Manage Today\'s Movies'),
-                  _buildMovieList(movieData.todaysMovies, 'today'),
-                  _buildSectionHeader('Manage Upcoming Movies'),
-                  _buildMovieList(movieData.upcomingMovies, 'upcoming'),
+                  _buildSectionHeader('Today\'s Movies'),
+                  (_searchTerm.isEmpty)
+                      ? _buildMovieList(movieData.todaysMovies , 'today')
+                      : _buildMovieList(filteredTodaysMovies, 'today'),
+                  _buildSectionHeader('Upcoming Movies'),
+                  (_searchTerm.isEmpty)
+                      ? _buildMovieList(movieData.upcomingMovies, 'upcoming')
+                      : _buildMovieList(filteredUpcomingMovies, 'upcoming'),
                 ],
               ),
             ],

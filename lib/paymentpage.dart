@@ -95,6 +95,13 @@ class _paymentpageState extends State<paymentpage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a card number';
                         }
+                        final cardNumber = value.replaceAll(' ', ''); // Remove spaces for validation
+                        if (cardNumber.length  !=12) {
+                          return 'Card number must be 12 Digits.';
+                        }
+                        if (!RegExp(r'^\d+$').hasMatch(cardNumber)) {
+                          return 'Card number can only contain digits.';
+                        }
                         return null;
                       },
                     ),
@@ -103,7 +110,7 @@ class _paymentpageState extends State<paymentpage> {
                       autofocus: true,
                       decoration: InputDecoration(
                         labelText: 'Expiry Date',
-                        hintText: 'MM/YYYY', // Add hint text
+                        hintText: 'MM/YY', // Add hint text
                         filled: true, // Fill the background
                         fillColor: Colors.grey[200], // Light grey background
                         border: OutlineInputBorder(
@@ -121,6 +128,10 @@ class _paymentpageState extends State<paymentpage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a Expiry Date of card';
+                        }
+                        final RegExp dateRegExp = RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$');
+                        if (!dateRegExp.hasMatch(value.trim())) {
+                          return 'Enter a valid expiry date in MM/YY format.';
                         }
                         return null;
                       },
@@ -146,8 +157,11 @@ class _paymentpageState extends State<paymentpage> {
                         ),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty ) {
                           return 'Please enter a CVV number';
+                        }
+                        if (value.length!=3) {
+                          return 'Please enter a valid CVV number';
                         }
                         return null;
                       },

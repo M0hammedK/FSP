@@ -37,8 +37,8 @@ class TicketsPage extends StatelessWidget {
               ? Center(
             child: Text(
               isAdmin
-                  ? 'No tickets available!'
-                  : 'No tickets yet!',
+                  ? 'No tickets yet!'
+                  : 'No tickets available!',
               style: const TextStyle(fontSize: 20, color: Colors.white),
             ),
           )

@@ -184,6 +184,9 @@ class _Home extends State<Home> {
                             onTap: () {
                               sign_up.username.text = "";
                               sign_up.image = File("images/CinemaTech.png");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Signed out.')),
+                              );
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

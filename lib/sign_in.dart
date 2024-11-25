@@ -104,7 +104,7 @@ class _sing_inState extends State<sing_in> {
                         if (value == null || value.trim().isEmpty) {
                           return "Email is required.";
                         }
-                        if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$' )
+                        if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
                             .hasMatch(value.trim()) && value !='admin') {
                           return "Enter a valid email address.";
                         }

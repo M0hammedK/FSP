@@ -50,12 +50,32 @@ class _SignUpPageState extends State<sign_up> {
       return;
     }
 
+    if (_username.text.trim().length < 4) {
+      _showSnackBar("Username should be 4 characters at least");
+      return;
+    }
+
+    if (_username.text.trim() == "admin") {
+      _showSnackBar("Username cannot be admin");
+      return;
+    }
+
     if (_email.text.trim() == "") {
       _showSnackBar("Email cannot be empty");
       return;
     }
+    final RegExp emailRegExp = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegExp.hasMatch(_email.text.trim())) {
+      _showSnackBar('Enter a valid email in XX@XX.xx format.');
+      return;
+    }
 
-    if (_password1.text.trim() == "" || _password1.text.trim() != _password2.text.trim()) {
+    if (_password1.text.trim().length < 6 ) {
+      _showSnackBar("Passwords must be 6 characters at least");
+      return;
+    }
+
+    if (_password1.text.trim() != _password2.text.trim()) {
       _showSnackBar("Passwords do not match or are empty");
       return;
     }

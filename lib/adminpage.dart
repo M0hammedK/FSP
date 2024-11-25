@@ -10,12 +10,13 @@ class AdminPage extends StatefulWidget {
   @override
   State<AdminPage> createState() => _AdminPageState();
 }
+final MovieData movieData = MovieData(); // Access the singleton
 
 class _AdminPageState extends State<AdminPage> {
-  final MovieData movieData = MovieData(); // Access the singleton
   String _searchTerm = '';
   Timer? _debounce;
   bool _isSearching = false;
+  List<String> categories = ['today', 'upcoming'];
 
   @override
   Widget build(BuildContext context) {
@@ -32,52 +33,51 @@ class _AdminPageState extends State<AdminPage> {
     }).toList();
 
     return Scaffold(
-      body:Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              "images/backgroundblack.jpg", // Add your background image path here
-              fit: BoxFit.cover,
-            ),
+        body: Stack(
+      children: [
+        Positioned.fill(
+          child: Image.asset(
+            "images/backgroundblack.jpg", // Add your background image path here
+            fit: BoxFit.cover,
           ),
+        ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: _isSearching
                 ? TextField(
-              autofocus: true, // Automatically focus the search field
-              onChanged: (text) {
-                if (_debounce?.isActive ?? false) _debounce?.cancel();
-                _debounce =
-                    Timer(const Duration(milliseconds: 500), () {
-                      setState(() {
-                        _searchTerm = text;
+                    autofocus: true, // Automatically focus the search field
+                    onChanged: (text) {
+                      if (_debounce?.isActive ?? false) _debounce?.cancel();
+                      _debounce = Timer(const Duration(milliseconds: 500), () {
+                        setState(() {
+                          _searchTerm = text;
+                        });
                       });
-                    });
-              },
-              decoration: InputDecoration(
-                hintText: 'Search movies...',
-                hintStyle: const TextStyle(color: Colors.white),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
-                  onPressed: () {
-                    setState(() {
-                      _searchTerm = '';
-                      _isSearching = false; // Close the search field
-                    });
-                  },
-                ),
-              ),
-              style: const TextStyle(color: Colors.white),
-            )
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Search movies...',
+                      hintStyle: const TextStyle(color: Colors.white),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () {
+                          setState(() {
+                            _searchTerm = '';
+                            _isSearching = false; // Close the search field
+                          });
+                        },
+                      ),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                  )
                 : const Text(
-              'CinemaTech',
-              style: TextStyle(
-                color: Colors.deepPurple,
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
+                    'CinemaTech',
+                    style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
             backgroundColor: Colors.black.withOpacity(0.8),
             elevation: 10,
             iconTheme: const IconThemeData(
@@ -97,12 +97,11 @@ class _AdminPageState extends State<AdminPage> {
           ),
           body: Stack(
             children: [
-
               ListView(
                 children: [
                   _buildSectionHeader('Today\'s Movies'),
                   (_searchTerm.isEmpty)
-                      ? _buildMovieList(movieData.todaysMovies , 'today')
+                      ? _buildMovieList(movieData.todaysMovies, 'today')
                       : _buildMovieList(filteredTodaysMovies, 'today'),
                   _buildSectionHeader('Upcoming Movies'),
                   (_searchTerm.isEmpty)
@@ -120,9 +119,8 @@ class _AdminPageState extends State<AdminPage> {
             backgroundColor: Colors.indigo,
           ),
         ),
-        ],
-      )
-    );
+      ],
+    ));
   }
 
   Widget _buildSectionHeader(String title) {
@@ -184,10 +182,9 @@ class _AdminPageState extends State<AdminPage> {
                   Text(
                     movie['title'],
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.white
-                    ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.white),
                   ),
                   Text(
                     movie['genre'],
@@ -235,6 +232,7 @@ class _AdminPageState extends State<AdminPage> {
         TextEditingController(text: movie['date']);
     final TextEditingController postUrlController =
         TextEditingController(text: movie['posterUrl']);
+    String categoryController = movie['category'];
 
     showDialog(
       context: context,
@@ -274,6 +272,21 @@ class _AdminPageState extends State<AdminPage> {
                   controller: postUrlController,
                   decoration: const InputDecoration(labelText: 'PostUrl'),
                 ),
+                DropdownButtonFormField<String>(
+                  value: categoryController, // Setinitial value
+                  decoration: const InputDecoration(labelText: 'Category'),
+                  items: categories.map((category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      categoryController = value!; // Update categoryController
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -294,6 +307,12 @@ class _AdminPageState extends State<AdminPage> {
                   movie['duration'] = durationController.text;
                   movie['date'] = dateController.text;
                   movie['posterUrl'] = postUrlController.text;
+                  if(movie['category'] != categoryController) {
+                    removeMovie(index, movie['category']);
+                    movie['category'] = categoryController;
+                    addMovie(movie);
+                  }
+
                 });
                 Navigator.pop(context); // Close the dialog
               },
@@ -322,11 +341,7 @@ class _AdminPageState extends State<AdminPage> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  if (category == 'today') {
-                    movieData.todaysMovies.removeAt(index);
-                  } else if (category == 'upcoming') {
-                    movieData.upcomingMovies.removeAt(index);
-                  }
+                  removeMovie(index, category);
                 });
                 Navigator.pop(context); // Close the dialog
               },
@@ -346,6 +361,7 @@ class _AdminPageState extends State<AdminPage> {
     final TextEditingController posterUrlController = TextEditingController();
     final TextEditingController durationController = TextEditingController();
     final TextEditingController dateController = TextEditingController();
+    String categoryController = 'today';
 
     showDialog(
       context: context,
@@ -385,6 +401,21 @@ class _AdminPageState extends State<AdminPage> {
                   controller: posterUrlController,
                   decoration: const InputDecoration(labelText: 'Poster URL'),
                 ),
+                DropdownButtonFormField<String>(
+                  value: categoryController, // Setinitial value
+                  decoration: const InputDecoration(labelText: 'Category'),
+                  items: categories.map((category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      categoryController = value!; // Update categoryController
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -406,8 +437,9 @@ class _AdminPageState extends State<AdminPage> {
                     'posterUrl': posterUrlController.text,
                     'duration': durationController.text,
                     'date': dateController.text,
+                    'category': categoryController,
                   };
-                  movieData.todaysMovies.add(newMovie); // Add to today's movies
+                  addMovie(newMovie);
                 });
                 Navigator.pop(context); // Close the dialog
               },
@@ -417,5 +449,21 @@ class _AdminPageState extends State<AdminPage> {
         );
       },
     );
+  }
+}
+
+void addMovie(Map<String, dynamic> movie) {
+
+  (movie['category'].contains('today'))
+      ? movieData.todaysMovies
+      .add(movie) // Add to today's movies
+      : movieData.upcomingMovies.add(movie);
+}
+
+void removeMovie(int index, category) {
+  if (category.contains('today')) {
+    movieData.todaysMovies.removeAt(index);
+  } else if (category.contains('upcoming')) {
+    movieData.upcomingMovies.removeAt(index);
   }
 }

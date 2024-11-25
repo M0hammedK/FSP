@@ -58,7 +58,7 @@ class _TicketsPageState extends State<TicketsPage> {
                     style: const TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 )
-              : Container(child: gettickets(tickets), padding: EdgeInsets.fromLTRB(0, 70, 0, 0),),
+              : Container(child: gettickets(tickets, isAdmin), padding: EdgeInsets.fromLTRB(0, 70, 0, 0),),
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -120,7 +120,7 @@ class _TicketsPageState extends State<TicketsPage> {
     );
   }
 
-  Widget gettickets(dynamic tickets) {
+  Widget gettickets(dynamic tickets, dynamic isAdmin) {
     return ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemCount: tickets.length,
@@ -195,6 +195,20 @@ class _TicketsPageState extends State<TicketsPage> {
                         ...date_Validation(ticket['date'], ticket['duration']),
                       ],
                     ),
+                    SizedBox(height: 10,),
+                    (isAdmin) ?
+                    Row(
+                      children: [
+
+                        Icon(Icons.email_outlined,
+                            color: Colors.grey, size: 18), // Date icon
+                        const SizedBox(width: 8),
+                        Text(
+                          'User: ${ticket['userEmail']}',
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ):Row(),
                   ],
                 ),
               ],

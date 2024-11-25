@@ -311,6 +311,7 @@ class _Home extends State<Home> {
                     rating: movie['rating'],
                     duration: movie['duration'],
                     date: movie['date'],
+                    category: movie['category']
                   ),
                 ),
               );

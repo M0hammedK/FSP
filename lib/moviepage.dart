@@ -10,6 +10,7 @@ class moviepage extends StatelessWidget {
   final String duration;
   final String date;
   final String story; // Add story property
+  final String category; // Add story property
 
   const moviepage({
     Key? key,
@@ -20,6 +21,7 @@ class moviepage extends StatelessWidget {
     required this.story, // Require story in constructor
     required this.duration, // Require story in constructor
     required this.date, // Require story in constructor
+    required this.category, // Require story in constructor
   }) : super(key: key);
 
   @override
@@ -161,7 +163,8 @@ class moviepage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    Center(// Center the button
+                    (category.contains('today'))
+                    ? Center(// Center the button
                       child: ElevatedButton(
                         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.deepPurple)),
                         onPressed: () {
@@ -172,7 +175,7 @@ class moviepage extends StatelessWidget {
                         },
                         child: const Text('Get Ticket', style: TextStyle(fontSize: 22, color: Colors.white),),
                       ),
-                    ),
+                    ):const Center(),
                   ],
                 ),
               ),

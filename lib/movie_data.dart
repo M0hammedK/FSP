@@ -17,6 +17,7 @@ class MovieData {
       'date': '12/12/2024 22:00',
       'genre': 'Biography, Drama, History',
       'rating': 8.6,
+      'category': 'today',
     },
     {
       'title': 'A Quiet Place Part II',
@@ -28,6 +29,7 @@ class MovieData {
       'date': '1/11/2024 00:00',
       'genre': 'Adventure, Comedy, Fantasy',
       'rating': 7.6,
+      'category': 'today',
     },
     {
       'title': 'Talk to Me',
@@ -38,6 +40,7 @@ class MovieData {
       'date': '01/01/2025 20:00',
       'genre': 'Horror, Mystery, Thriller',
       'rating': 7.4,
+      'category': 'today',
     },
   ];
 
@@ -51,6 +54,7 @@ class MovieData {
       'date': '01/01/2025 20:00',
       'genre': 'Genre 4',
       'rating': 7.2,
+      'category': 'upcoming',
     },
     {
       'title': 'Oppenheimer',
@@ -62,6 +66,7 @@ class MovieData {
       'date': '12/12/2024 22:00',
       'genre': 'Genre 5',
       'rating': 8.0,
+      'category': 'upcoming',
     },
   ];
 

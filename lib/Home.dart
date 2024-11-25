@@ -183,7 +183,7 @@ class _Home extends State<Home> {
                                 style: TextStyle(color: Colors.white)),
                             onTap: () {
                               sign_up.username.text = "";
-                              sign_up.image = File("images/CinemaTech.png");
+                              sign_up.image = null;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signed out.')),
                               );

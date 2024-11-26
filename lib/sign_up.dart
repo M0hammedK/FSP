@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:untitled1/sign_in.dart';
 import 'package:untitled1/user_data.dart';
 
 final UserData users = UserData();
@@ -113,7 +114,7 @@ class _SignUpPageState extends State<sign_up> {
     _password1.text = "";
     _password2.text = "";
     _phone.text = "";
-
+    sing_in.image = null;
     Navigator.pushNamed(context, "sign_in");
   }
 

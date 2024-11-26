@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:untitled1/user_data.dart';
+
+final UserData users = UserData();
 
 class sign_up extends StatefulWidget {
   static TextEditingController email = _SignUpPageState._email;
@@ -9,7 +12,7 @@ class sign_up extends StatefulWidget {
   static TextEditingController password = _SignUpPageState._password1;
   static File? image;
 
-  const sign_up({super.key});
+  sign_up({super.key});
 
   @override
   State<sign_up> createState() => _SignUpPageState();
@@ -97,6 +100,20 @@ class _SignUpPageState extends State<sign_up> {
       return;
     }
     // If all validations pass
+    users.Users.add({
+      'username': _username.text, // Movie title
+      'email': _email.text,
+      'password': _password1.text,
+      'image':sign_up.image,
+      'phone':_phone.text
+    });
+
+    _username.text = "";
+    _email.text = "";
+    _password1.text = "";
+    _password2.text = "";
+    _phone.text = "";
+
     Navigator.pushNamed(context, "sign_in");
   }
 

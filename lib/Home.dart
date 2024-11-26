@@ -8,6 +8,7 @@ import 'package:untitled1/adminpage.dart';
 import 'movie_data.dart';
 import 'moviepage.dart';
 import 'sign_up.dart';
+import 'user_data.dart';
 import 'sign_in.dart';
 
 class Home extends StatefulWidget {
@@ -62,15 +63,15 @@ class _Home extends State<Home> {
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: (sign_up.image != null)
-                                ? FileImage(sign_up.image!)
+                            backgroundImage: (sing_in.image != null)
+                                ? FileImage(sing_in.image!)
                                 : const AssetImage('images/CinemaTech.png')
                                     as ImageProvider,
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            (sign_up.username.text.trim() != "")
-                                ? sign_up.username.text.trim()
+                            (sing_in.username != "")
+                                ? sing_in.username
                                 : "CinemaTech",
                             style: const TextStyle(
                               color: Colors.tealAccent,
@@ -81,7 +82,7 @@ class _Home extends State<Home> {
                       ),
                     ),
                     // Navigate to Profile
-                    (sign_up.username.text == "")
+                    (sing_in.username == "")
                         ? ListTile(
                             leading: const Icon(Icons.account_circle,
                                 color: Colors.white),
@@ -95,7 +96,7 @@ class _Home extends State<Home> {
                               );
                             },
                           )
-                        : (sign_up.username.text != "admin")
+                        : (sing_in.username != "admin")
                             ? ListTile(
                                 leading: const Icon(Icons.local_movies_sharp,
                                     color: Colors.white),
@@ -125,7 +126,7 @@ class _Home extends State<Home> {
                                 },
                               ),
                     // Sign Up Option
-                    (sign_up.username.text == "")
+                    (sing_in.username == "")
                         ? ListTile(
                             leading: const Icon(Icons.person_add,
                                 color: Colors.white),
@@ -135,19 +136,21 @@ class _Home extends State<Home> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const sign_up()),
+                                    builder: (context) =>  sign_up()),
                               );
                             },
                           )
-                        : (sign_up.username.text != "admin")
+                        : (sing_in.username != "admin")
                             ? ListTile(
                                 leading: const Icon(Icons.logout,
                                     color: Colors.white),
                                 title: const Text('Sign Out',
                                     style: TextStyle(color: Colors.white)),
                                 onTap: () {
-                                  sign_up.username.text = "";
-                                  sign_up.image = null;
+                                  sing_in.username = "";
+                                  sing_in.image = null;
+                                  sing_in.email="";
+                                  sing_in.password="";
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Signed out.')),
@@ -175,15 +178,15 @@ class _Home extends State<Home> {
                                   );
                                 },
                               ),
-                    (sign_up.username.text == "admin")
+                    (sing_in.username == "admin")
                         ? ListTile(
                             leading:
                                 const Icon(Icons.logout, color: Colors.white),
                             title: const Text('Sign Out',
                                 style: TextStyle(color: Colors.white)),
                             onTap: () {
-                              sign_up.username.text = "";
-                              sign_up.image = null;
+                              sing_in.username = "";
+                              sing_in.image = null;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signed out.')),
                               );

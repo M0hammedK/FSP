@@ -317,7 +317,8 @@ class _Home extends State<Home> {
                     rating: movie['rating'],
                     duration: movie['duration'],
                     date: movie['date'],
-                    category: movie['category']
+                    category: movie['category'],
+                    price: movie['price'],
                   ),
                 ),
               );
@@ -384,6 +385,8 @@ class MovieCard extends StatelessWidget {
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   RichText(
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
@@ -396,14 +399,15 @@ class MovieCard extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
-                        TextSpan(
+                        (rating != 0.0)?
+                         TextSpan(
                           text: 'Rating: $rating',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.blue),
-                        ),
+                        ): const TextSpan(),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

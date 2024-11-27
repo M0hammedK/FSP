@@ -11,6 +11,7 @@ class moviepage extends StatelessWidget {
   final String date;
   final String story; // Add story property
   final String category; // Add story property
+  final int price; // Add story property
 
   const moviepage({
     Key? key,
@@ -22,6 +23,7 @@ class moviepage extends StatelessWidget {
     required this.duration, // Require story in constructor
     required this.date, // Require story in constructor
     required this.category, // Require story in constructor
+    required this.price, // Require story in constructor
   }) : super(key: key);
 
   @override
@@ -39,7 +41,7 @@ class moviepage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: Text(title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.deepPurple,
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
@@ -104,6 +106,7 @@ class moviepage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    (rating != 0.0)?
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
@@ -117,7 +120,7 @@ class moviepage extends StatelessWidget {
                           ),
                         ],
                     ),
-                  ),
+                  ): const SizedBox(),
                     const SizedBox(height: 20),
                     const Text(
                       'Story:',
@@ -133,6 +136,7 @@ class moviepage extends StatelessWidget {
                       style: const TextStyle(fontSize: 22, color: Colors.white),
                     ),
                     const SizedBox(height: 25),
+                    (duration != '')?
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
@@ -146,14 +150,14 @@ class moviepage extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
+                    ): const SizedBox(),
                     const SizedBox(height: 15),
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
                           const TextSpan(
                             text: 'Date & Time: ',
-                            style: const TextStyle(fontSize: 22, color: Colors.red, fontWeight: FontWeight.bold,),
+                            style: TextStyle(fontSize: 22, color: Colors.red, fontWeight: FontWeight.bold,),
                           ),
                           TextSpan(
                             text: date,
@@ -162,6 +166,12 @@ class moviepage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 10,),
+                    (price != 0)?
+                    Text(
+                      'Ticket Price: $price',
+                      style: const TextStyle(fontSize: 22, color: Colors.white),
+                    ):const SizedBox(),
                     const SizedBox(height: 30),
                     (category.contains('today'))
                     ? Center(// Center the button

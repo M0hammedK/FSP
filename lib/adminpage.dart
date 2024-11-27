@@ -10,6 +10,7 @@ class AdminPage extends StatefulWidget {
   @override
   State<AdminPage> createState() => _AdminPageState();
 }
+
 final MovieData movieData = MovieData(); // Access the singleton
 
 class _AdminPageState extends State<AdminPage> {
@@ -17,6 +18,15 @@ class _AdminPageState extends State<AdminPage> {
   Timer? _debounce;
   bool _isSearching = false;
   List<String> categories = ['today', 'upcoming'];
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +47,8 @@ class _AdminPageState extends State<AdminPage> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            "images/backgroundblack.jpg", // Add your background image path here
+            "images/backgroundblack.jpg",
+            // Add your background image path here
             fit: BoxFit.cover,
           ),
         ),
@@ -232,62 +243,163 @@ class _AdminPageState extends State<AdminPage> {
         TextEditingController(text: movie['date']);
     final TextEditingController postUrlController =
         TextEditingController(text: movie['posterUrl']);
+    final TextEditingController priceController =
+        TextEditingController(text: movie['price'].toString());
     String categoryController = movie['category'];
 
     showDialog(
       context: context,
       builder: (context) {
+        final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
         return AlertDialog(
           title: const Text('Edit Movie'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(labelText: 'Title'),
-                ),
-                TextField(
-                  controller: storyController,
-                  decoration: const InputDecoration(labelText: 'Story'),
-                ),
-                TextField(
-                  controller: genreController,
-                  decoration: const InputDecoration(labelText: 'Genre'),
-                ),
-                TextField(
-                  controller: ratingController,
-                  decoration: const InputDecoration(labelText: 'Rating'),
-                  keyboardType: TextInputType.number,
-                ),
-                TextField(
-                  controller: durationController,
-                  decoration: const InputDecoration(labelText: 'Duration'),
-                ),
-                TextField(
-                  controller: dateController,
-                  decoration: const InputDecoration(labelText: 'Date'),
-                ),
-                TextField(
-                  controller: postUrlController,
-                  decoration: const InputDecoration(labelText: 'PostUrl'),
-                ),
-                DropdownButtonFormField<String>(
-                  value: categoryController, // Setinitial value
-                  decoration: const InputDecoration(labelText: 'Category'),
-                  items: categories.map((category) {
-                    return DropdownMenuItem<String>(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      categoryController = value!; // Update categoryController
-                    });
-                  },
-                ),
-              ],
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: titleController,
+                    decoration: const InputDecoration(labelText: 'Title'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Title cannot be empty';
+                      }
+                      return null; // Return null if valid
+                    },
+                  ),
+                  TextFormField(
+                    controller: storyController,
+                    decoration: const InputDecoration(labelText: 'Story'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Story cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: genreController,
+                    decoration: const InputDecoration(labelText: 'Genre'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Genre cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: ratingController,
+                    decoration: const InputDecoration(labelText: 'Rating'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (ratingController == "0.0") {
+                          _showSnackBar("Rating cannot be 0.0");
+                        }
+                      }
+
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: durationController,
+                    decoration: const InputDecoration(labelText: 'Duration'),
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (value == null || value.isEmpty) {
+                          return 'Duration cannot be empty';
+                        }
+
+                        final RegExp DurationRegExp = RegExp(
+                            r'^(2[0-4]|1\d|0\d|\d):([0-5]\d):([0-5]\d)$');
+
+                        if (!DurationRegExp.hasMatch(value)) {
+                          return ('Enter a valid duration like HH:MM:SS format.');
+                        }
+                      } else {
+                        final RegExp DurationRegExp = RegExp(
+                            r'^$|^(2[0-4]|1\d|0\d|\d):([0-5]\d):([0-5]\d)$');
+
+                        if (!DurationRegExp.hasMatch(value!)) {
+                          return ('Enter a valid duration like HH:MM:SS format.');
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: dateController,
+                    decoration: const InputDecoration(labelText: 'Date'),
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (value == null || value.isEmpty) {
+                          return 'Date cannot be empty';
+                        }
+                        final RegExp DateRegExp = RegExp(
+                            r'^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/(\d{4}) (0\d|1\d|2[0-3]):([0-5]\d)$');
+
+                        if (!DateRegExp.hasMatch(value)) {
+                          return ('Enter a valid duration like DD/MM/YYYY HH:mm format.');
+                        }
+                      } else {
+                        if (value == "") {
+                          return ('date cannot be empty.');
+                        }
+
+                        final RegExp DateRegExp = RegExp(
+                            r'^((0[0-9]|[12]\d|3[01])/([0-1]\d)|00/00)/(\d{4})( (0\d|1\d|2[0-3]):([0-5]\d))?$');
+
+                        if (!DateRegExp.hasMatch(value!)) {
+                          return ('Enter a valid date like DD/MM/YYYY HH:mm format (time is optional and if there is no day or month set it 00).');
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: postUrlController,
+                    decoration: const InputDecoration(labelText: 'Poster URL'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Post URL cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: priceController,
+                    decoration:
+                        const InputDecoration(labelText: 'Ticket Price'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (value == null || value.isEmpty) {
+                          return 'Price cannot be 0';
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: categoryController, // Setinitial value
+                    decoration: const InputDecoration(labelText: 'Category'),
+                    items: categories.map((category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        categoryController =
+                            value!; // Update categoryController
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -299,22 +411,28 @@ class _AdminPageState extends State<AdminPage> {
             ),
             TextButton(
               onPressed: () {
-                setState(() {
-                  movie['title'] = titleController.text;
-                  movie['story'] = storyController.text;
-                  movie['genre'] = genreController.text;
-                  movie['rating'] = double.parse(ratingController.text);
-                  movie['duration'] = durationController.text;
-                  movie['date'] = dateController.text;
-                  movie['posterUrl'] = postUrlController.text;
-                  if(movie['category'] != categoryController) {
-                    removeMovie(index, movie['category']);
-                    movie['category'] = categoryController;
-                    addMovie(movie);
+                (ratingController.text == "")
+                    ? ratingController.text = "0.0"
+                    : null;
+                (priceController.text == "")
+                    ? priceController.text = "0"
+                    : null;                setState(() {
+                  if (_formKey.currentState!.validate()) {
+                    movie['title'] = titleController.text;
+                    movie['story'] = storyController.text;
+                    movie['genre'] = genreController.text;
+                    movie['rating'] = double.parse(ratingController.text);
+                    movie['duration'] = durationController.text;
+                    movie['date'] = dateController.text;
+                    movie['posterUrl'] = postUrlController.text;
+                    if (movie['category'] != categoryController) {
+                      removeMovie(index, movie['category']);
+                      movie['category'] = categoryController;
+                      addMovie(movie);
+                    }
+                    Navigator.pop(context); // Close the dialog
                   }
-
                 });
-                Navigator.pop(context); // Close the dialog
               },
               child: const Text('Save'),
             ),
@@ -361,62 +479,162 @@ class _AdminPageState extends State<AdminPage> {
     final TextEditingController posterUrlController = TextEditingController();
     final TextEditingController durationController = TextEditingController();
     final TextEditingController dateController = TextEditingController();
+    final TextEditingController priceController = TextEditingController();
     String categoryController = 'today';
 
     showDialog(
       context: context,
       builder: (context) {
+        final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
         return AlertDialog(
           title: const Text('Add New Movie'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(labelText: 'Title'),
-                ),
-                TextField(
-                  controller: storyController,
-                  decoration: const InputDecoration(labelText: 'Story'),
-                ),
-                TextField(
-                  controller: genreController,
-                  decoration: const InputDecoration(labelText: 'Genre'),
-                ),
-                TextField(
-                  controller: ratingController,
-                  decoration: const InputDecoration(labelText: 'Rating'),
-                  keyboardType: TextInputType.number,
-                ),
-                TextField(
-                  controller: durationController,
-                  decoration: const InputDecoration(labelText: 'Duration'),
-                ),
-                TextField(
-                  controller: dateController,
-                  decoration: const InputDecoration(labelText: 'Date'),
-                ),
-                TextField(
-                  controller: posterUrlController,
-                  decoration: const InputDecoration(labelText: 'Poster URL'),
-                ),
-                DropdownButtonFormField<String>(
-                  value: categoryController, // Setinitial value
-                  decoration: const InputDecoration(labelText: 'Category'),
-                  items: categories.map((category) {
-                    return DropdownMenuItem<String>(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      categoryController = value!; // Update categoryController
-                    });
-                  },
-                ),
-              ],
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: titleController,
+                    decoration: const InputDecoration(labelText: 'Title'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Title cannot be empty';
+                      }
+                      return null; // Return null if valid
+                    },
+                  ),
+                  TextFormField(
+                    controller: storyController,
+                    decoration: const InputDecoration(labelText: 'Story'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Story cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: genreController,
+                    decoration: const InputDecoration(labelText: 'Genre'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Genre cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: ratingController,
+                    decoration: const InputDecoration(labelText: 'Rating'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (ratingController == "0.0") {
+                          _showSnackBar("Rating cannot be 0.0");
+                        }
+                      }
+
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: durationController,
+                    decoration: const InputDecoration(labelText: 'Duration'),
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (value == null || value.isEmpty) {
+                          return 'Duration cannot be empty';
+                        }
+
+                        final RegExp DurationRegExp = RegExp(
+                            r'^(2[0-4]|1\d|0\d|\d):([0-5]\d):([0-5]\d)$');
+
+                        if (!DurationRegExp.hasMatch(value)) {
+                          return ('Enter a valid duration like HH:MM:SS format.');
+                        }
+                      } else {
+                        final RegExp DurationRegExp = RegExp(
+                            r'^$|^(2[0-4]|1\d|0\d|\d):([0-5]\d):([0-5]\d)$');
+
+                        if (!DurationRegExp.hasMatch(value!)) {
+                          return ('Enter a valid duration like HH:MM:SS format.');
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: dateController,
+                    decoration: const InputDecoration(labelText: 'Date'),
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (value == null || value.isEmpty) {
+                          return 'Date cannot be empty';
+                        }
+                        final RegExp DateRegExp = RegExp(
+                            r'^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/(\d{4}) (0\d|1\d|2[0-3]):([0-5]\d)$');
+
+                        if (!DateRegExp.hasMatch(value)) {
+                          return ('Enter a valid duration like DD/MM/YYYY HH:mm format.');
+                        }
+                      } else {
+                        if (value == "") {
+                          return ('date cannot be empty.');
+                        }
+
+                        final RegExp DateRegExp = RegExp(
+                            r'^((0[0-9]|[12]\d|3[01])/([0-1]\d)|00/00)/(\d{4})( (0\d|1\d|2[0-3]):([0-5]\d))?$');
+
+                        if (!DateRegExp.hasMatch(value!)) {
+                          return ('Enter a valid date like DD/MM/YYYY HH:mm format (time is optional and if there is no day or month set it 00).');
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: posterUrlController,
+                    decoration: const InputDecoration(labelText: 'Poster URL'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Post URL cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: priceController,
+                    decoration:
+                        const InputDecoration(labelText: 'Ticket Price'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (categoryController == 'today') {
+                        if (value == null || value.isEmpty) {
+                          return 'Price cannot be 0';
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: categoryController, // Setinitial value
+                    decoration: const InputDecoration(labelText: 'Category'),
+                    items: categories.map((category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        categoryController =
+                            value!; // Update categoryController
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -428,20 +646,32 @@ class _AdminPageState extends State<AdminPage> {
             ),
             TextButton(
               onPressed: () {
-                setState(() {
-                  final newMovie = {
-                    'title': titleController.text,
-                    'story': storyController.text,
-                    'genre': genreController.text,
-                    'rating': double.parse(ratingController.text),
-                    'posterUrl': posterUrlController.text,
-                    'duration': durationController.text,
-                    'date': dateController.text,
-                    'category': categoryController,
-                  };
-                  addMovie(newMovie);
-                });
-                Navigator.pop(context); // Close the dialog
+                (ratingController.text == "")
+                    ? ratingController.text = "0.0"
+                    : null;
+                (priceController.text == "")
+                    ? priceController.text = "0"
+                    : null;
+                setState(
+                  () {
+                    if (_formKey.currentState!.validate()) {
+                      final newMovie = {
+                        'title': titleController,
+                        'story': storyController,
+                        'genre': genreController,
+                        'rating': ratingController,
+                        'posterUrl': posterUrlController,
+                        'duration': durationController,
+                        'date': dateController,
+                        'category': categoryController,
+                        'price': priceController,
+                      };
+                      addMovie(newMovie);
+                      Navigator.pop(context);
+                    }
+                    ;
+                  },
+                );
               },
               child: const Text('Add Movie'),
             ),
@@ -453,10 +683,8 @@ class _AdminPageState extends State<AdminPage> {
 }
 
 void addMovie(Map<String, dynamic> movie) {
-
   (movie['category'].contains('today'))
-      ? movieData.todaysMovies
-      .add(movie) // Add to today's movies
+      ? movieData.todaysMovies.add(movie) // Add to today's movies
       : movieData.upcomingMovies.add(movie);
 }
 

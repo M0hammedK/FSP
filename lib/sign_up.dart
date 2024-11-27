@@ -74,6 +74,16 @@ class _SignUpPageState extends State<sign_up> {
       return;
     }
 
+      final userMatch = users.Users.firstWhere(
+            (u) => u['email'].toString().trim() == _email.text.trim()
+        orElse: () => {}, // Returns an empty map if no match found
+      );
+
+if(userMatch != null)
+{
+_showSnackBar('this email is already exist!.');
+      return
+}
     if (_password1.text.trim().length < 6 ) {
       _showSnackBar("Passwords must be 6 characters at least");
       return;

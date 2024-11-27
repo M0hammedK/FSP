@@ -46,19 +46,14 @@ class _sing_inState extends State<sing_in> {
         orElse: () => {}, // Returns an empty map if no match found
       );
 
-      if (userMatch.isNotEmpty) {
-        // Valid user found - Retrieve their data
-        sing_in.username = userMatch['username'] ?? ''; // Example: Store username
-        sing_in.email = userMatch['email'] ?? ''; // Example: Retrieve the email
-        sing_in.image = userMatch['image'] ?? null; // Example: Retrieve the email
-        sing_in.phone = userMatch['phone'] ?? ''; // Example: Retrieve the email
-
-        Navigator.pushNamed(context, 'home'); // Navigate to home
-      } else if (_email.text.trim() == 'admin' && _password.text.trim() == 'admin') {
-        // Admin credentials check
-        sign_up.username.text = "admin";
-        Navigator.pushNamed(context, 'home');
-      } else {
+     if (userMatch.isNotEmpty) {
+          // Valid user found - Retrieve their data
+          sing_in.username = userMatch['username']; // Example: Store username
+          sing_in.email = userMatch['email']; // Example: Retrieve the email
+          sing_in.image = userMatch['image'] ?? null; // Example: Retrieve the email
+          sing_in.phone = userMatch['phone'] ?? ''; // Example: Retrieve the email
+          Navigator.pushNamed(context, 'home'); // Navigate to home
+        } else {
         // Invalid credentials
         setState(() {
           _errorMessage = "Invalid email or password. Please try again.";

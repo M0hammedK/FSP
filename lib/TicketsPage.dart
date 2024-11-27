@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:untitled1/sign_in.dart';
 import 'movie_data.dart';
 import 'package:intl/intl.dart';
 import 'sign_up.dart';
@@ -21,10 +22,16 @@ class _TicketsPageState extends State<TicketsPage> {
   @override
   Widget build(BuildContext context) {
     final MovieData movieData = MovieData();
-    final isAdmin = sign_up.username.text == "admin";
-    final userEmail = sign_up.email.text.trim();
+    final isAdmin = sing_in.username == "admin";
+    final userEmail = sing_in.email;
 
-    final filteredtickets = movieData.Tickets.where((ticket) {
+    final filteredticketsbyuser = movieData.Tickets.where((ticket) {
+      final user = ticket['userEmail'].toLowerCase();
+      final searchTerm = _searchTerm.toLowerCase();
+      return user.contains(searchTerm);
+    }).toList();
+
+    final filteredticketsbytitle = movieData.Tickets.where((ticket) {
       final title = ticket['title'].toLowerCase();
       final searchTerm = _searchTerm.toLowerCase();
       return title.contains(searchTerm);
@@ -37,9 +44,13 @@ class _TicketsPageState extends State<TicketsPage> {
           .toList();
     } else{
       tickets = isAdmin
-          ? filteredtickets // Admin sees all tickets
-          : filteredtickets.where((ticket) => ticket['userEmail'] == userEmail)
+          ? Addtwofilters(filteredticketsbytitle, filteredticketsbyuser)// Admin sees all tickets
+          : filteredticketsbytitle.where((ticket) => ticket['userEmail'] == userEmail)
           .toList();
+
+      // tickets += isAdmin
+      //     ? filteredticketsbyuser
+      //     : null;
     }
 
     return Scaffold(
@@ -218,6 +229,18 @@ class _TicketsPageState extends State<TicketsPage> {
       },
     );
   }
+}
+
+List<Map<String, dynamic>> Addtwofilters(List<Map<String, dynamic>> filteredticketsbytitle, List<Map<String, dynamic>> filteredticketsbyuser) {
+  for(var movie1 in filteredticketsbytitle){
+    for(var movie2 in filteredticketsbyuser){
+      if(movie1['userEmail'] == movie2['userEmail'] && movie1['title'] == movie2['title']){
+        filteredticketsbyuser.remove(movie2);
+        break;
+      }
+    }
+  }
+  return filteredticketsbytitle + filteredticketsbyuser;
 }
 
 List<Widget> date_Validation(String date, String movieduration) {

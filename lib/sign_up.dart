@@ -8,11 +8,6 @@ import 'package:untitled1/user_data.dart';
 final UserData users = UserData();
 
 class sign_up extends StatefulWidget {
-  static TextEditingController email = _SignUpPageState._email;
-  static TextEditingController username = _SignUpPageState._username;
-  static TextEditingController password = _SignUpPageState._password1;
-  static File? image;
-
   sign_up({super.key});
 
   @override
@@ -26,6 +21,8 @@ class _SignUpPageState extends State<sign_up> {
   static final TextEditingController _password1 = TextEditingController();
   static final TextEditingController _password2 = TextEditingController();
   static final TextEditingController _phone = TextEditingController();
+  File? image;
+
   bool _obsecureText = true;
 
   void _passwordVisibility() {
@@ -38,9 +35,9 @@ class _SignUpPageState extends State<sign_up> {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        sign_up.image = File(pickedFile.path);
+        image = File(pickedFile.path);
       } else {
-        sign_up.image = null; // Reset the image if no file was picked
+        image = null; // Reset the image if no file was picked
       }
     });
   }
@@ -75,15 +72,16 @@ class _SignUpPageState extends State<sign_up> {
     }
 
       final userMatch = users.Users.firstWhere(
-            (u) => u['email'].toString().trim() == _email.text.trim()
+            (u) => u['email'].toString().trim() == _email.text.trim(),
         orElse: () => {}, // Returns an empty map if no match found
       );
 
-if(userMatch != null)
-{
-_showSnackBar('this email is already exist!.');
-      return
-}
+    if(userMatch.isNotEmpty)
+    {
+      _showSnackBar('this email is already exist!.');
+      return;
+    }
+
     if (_password1.text.trim().length < 6 ) {
       _showSnackBar("Passwords must be 6 characters at least");
       return;
@@ -106,7 +104,7 @@ _showSnackBar('this email is already exist!.');
       return;
     }
 
-    if (sign_up.image == null) {
+    if (image == null) {
       _showSnackBar("Please select an image");
       return;
     }
@@ -115,7 +113,7 @@ _showSnackBar('this email is already exist!.');
       'username': _username.text, // Movie title
       'email': _email.text,
       'password': _password1.text,
-      'image':sign_up.image,
+      'image':image,
       'phone':_phone.text
     });
 
@@ -124,7 +122,7 @@ _showSnackBar('this email is already exist!.');
     _password1.text = "";
     _password2.text = "";
     _phone.text = "";
-    sing_in.image = null;
+    image = null;
     Navigator.pushNamed(context, "sign_in");
   }
 
@@ -178,8 +176,8 @@ _showSnackBar('this email is already exist!.');
                       child: CircleAvatar(
                         radius: 60,
                         backgroundImage:
-                        sign_up.image != null ? FileImage(sign_up.image!) : null,
-                        child: sign_up.image == null
+                        image != null ? FileImage(image!) : null,
+                        child: image == null
                             ? const Icon(Icons.add_a_photo, size: 40)
                             : null,
                       ),

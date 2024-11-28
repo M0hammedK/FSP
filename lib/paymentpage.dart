@@ -191,7 +191,7 @@ class _paymentpageState extends State<paymentpage> {
                             });
                             MovieData().Tickets.add({
                               'title': widget.title, // Movie title
-                              'userEmail': sing_in.email,
+                              'userEmail': sing_in.email.text,
                               'moviePost': widget.posterUrl,
                               'duration': widget.duration,
                               'date': widget.date

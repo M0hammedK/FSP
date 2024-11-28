@@ -151,7 +151,7 @@ class _Home extends State<Home> {
                                   sing_in.image = null;
                                   sing_in.email="";
                                   sing_in.password="";
-                                  sing_in.phone = "";
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Signed out.')),
                                   );
@@ -187,9 +187,6 @@ class _Home extends State<Home> {
                             onTap: () {
                               sing_in.username = "";
                               sing_in.image = null;
-                              sing_in.email="";
-                              sing_in.password="";
-                              sing_in.phone = "";
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signed out.')),
                               );

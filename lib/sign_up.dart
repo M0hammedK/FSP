@@ -8,6 +8,11 @@ import 'package:untitled1/user_data.dart';
 final UserData users = UserData();
 
 class sign_up extends StatefulWidget {
+  static TextEditingController email = _SignUpPageState._email;
+  static TextEditingController username = _SignUpPageState._username;
+  static TextEditingController password = _SignUpPageState._password1;
+  static File? image;
+
   sign_up({super.key});
 
   @override
@@ -21,8 +26,6 @@ class _SignUpPageState extends State<sign_up> {
   static final TextEditingController _password1 = TextEditingController();
   static final TextEditingController _password2 = TextEditingController();
   static final TextEditingController _phone = TextEditingController();
-  File? image;
-
   bool _obsecureText = true;
 
   void _passwordVisibility() {
@@ -35,9 +38,9 @@ class _SignUpPageState extends State<sign_up> {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        image = File(pickedFile.path);
+        sign_up.image = File(pickedFile.path);
       } else {
-        image = null; // Reset the image if no file was picked
+        sign_up.image = null; // Reset the image if no file was picked
       }
     });
   }
@@ -72,16 +75,15 @@ class _SignUpPageState extends State<sign_up> {
     }
 
       final userMatch = users.Users.firstWhere(
-            (u) => u['email'].toString().trim() == _email.text.trim(),
+            (u) => u['email'].toString().trim() == _email.text.trim()
         orElse: () => {}, // Returns an empty map if no match found
       );
 
-    if(userMatch.isNotEmpty)
-    {
-      _showSnackBar('this email is already exist!.');
-      return;
-    }
-
+if(userMatch != null)
+{
+_showSnackBar('this email is already exist!.');
+      return
+}
     if (_password1.text.trim().length < 6 ) {
       _showSnackBar("Passwords must be 6 characters at least");
       return;
@@ -104,7 +106,7 @@ class _SignUpPageState extends State<sign_up> {
       return;
     }
 
-    if (image == null) {
+    if (sign_up.image == null) {
       _showSnackBar("Please select an image");
       return;
     }
@@ -113,7 +115,7 @@ class _SignUpPageState extends State<sign_up> {
       'username': _username.text, // Movie title
       'email': _email.text,
       'password': _password1.text,
-      'image':image,
+      'image':sign_up.image,
       'phone':_phone.text
     });
 
@@ -122,7 +124,7 @@ class _SignUpPageState extends State<sign_up> {
     _password1.text = "";
     _password2.text = "";
     _phone.text = "";
-    image = null;
+    sing_in.image = null;
     Navigator.pushNamed(context, "sign_in");
   }
 
@@ -176,8 +178,8 @@ class _SignUpPageState extends State<sign_up> {
                       child: CircleAvatar(
                         radius: 60,
                         backgroundImage:
-                        image != null ? FileImage(image!) : null,
-                        child: image == null
+                        sign_up.image != null ? FileImage(sign_up.image!) : null,
+                        child: sign_up.image == null
                             ? const Icon(Icons.add_a_photo, size: 40)
                             : null,
                       ),

@@ -416,7 +416,8 @@ class _AdminPageState extends State<AdminPage> {
                     : null;
                 (priceController.text == "")
                     ? priceController.text = "0"
-                    : null;                setState(() {
+                    : null;
+                setState(() {
                   if (_formKey.currentState!.validate()) {
                     movie['title'] = titleController.text;
                     movie['story'] = storyController.text;
@@ -656,15 +657,15 @@ class _AdminPageState extends State<AdminPage> {
                   () {
                     if (_formKey.currentState!.validate()) {
                       final newMovie = {
-                        'title': titleController,
-                        'story': storyController,
-                        'genre': genreController,
-                        'rating': ratingController,
-                        'posterUrl': posterUrlController,
-                        'duration': durationController,
-                        'date': dateController,
+                        'title': titleController.text,
+                        'story': storyController.text,
+                        'genre': genreController.text,
+                        'rating': ratingController.text,
+                        'posterUrl': posterUrlController.text,
+                        'duration': durationController.text,
+                        'date': dateController.text,
                         'category': categoryController,
-                        'price': priceController,
+                        'price': priceController.text,
                       };
                       addMovie(newMovie);
                       Navigator.pop(context);
